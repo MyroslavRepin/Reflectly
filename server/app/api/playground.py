@@ -5,6 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from pathlib import Path
 from server.core.config import settings
 from server.db.sessions import get_db
+from server.utils.security.auth import hash_password
+from server.core.logging_config import logger
 from sqlalchemy import text, select
 
 router = APIRouter()
@@ -22,5 +24,6 @@ templates = Jinja2Templates(
 async def landing(request: Request, db: AsyncSession = Depends(get_db)):
     stmt = select(1)
     result = await db.execute(stmt)
-    return result.scalars().first()
+    logger.debug("test")
+    return hash_password("test")
     # return settings.db_name
