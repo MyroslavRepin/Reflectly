@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  # Main server
+  server:
+    build: .
+    container_name: reflectly-server
+    image: reflectly:latest
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    logging:
+      driver: json-file
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://reflectly:reflectly123@db:5432/reflectly
+
+  db:
+    image: postgres:16
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: reflectly
+      POSTGRES_PASSWORD: reflectly123
+      POSTGRES_DB: reflectly
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
