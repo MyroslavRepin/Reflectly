@@ -12,6 +12,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from server.app.api.landing import router as landing_router
+from server.app.api.playground import router as playground_router
 
 # Creating Main App
 app = FastAPI()
@@ -32,3 +33,4 @@ app.mount("/assets", StaticFiles(directory=os.path.join(FRONTEND_DIR,
 
 # app.include_router(auth_router)
 app.include_router(landing_router)
+app.include_router(playground_router)

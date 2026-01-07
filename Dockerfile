@@ -1,19 +1,23 @@
 FROM python:3.11-slim
 
-# Install uv (UV Manager)
-RUN pip install --no-cache-dir uv
+# Install uv CLI and uvicorn ASGI server so `uv sync` and `uv run` work
+RUN pip install --no-cache-dir "uv" "uvicorn[standard]"
+RUN apt-get update && apt-get install -y \
+    libpq-dev gcc \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Copy dependency files and install packages
+# Copy dependencies and install via uv's lockfile (use python -m uv to avoid missing script entrypoint)
 COPY pyproject.toml uv.lock ./
-RUN uv sync --frozen
+RUN uv sync
 
-# Copy the project files
-COPY server .
+# Copy project files (server, frontend и т.д.)
+COPY . .
 
-# Expose the port
+# Expose port
 EXPOSE 8080
 
-# Run the FastAPI app using UV Manager
-CMD ["uv", "run", "server.app.main:app", "--host", "0.0.0.0", "--port", "8080", "--reload"]
+# Run FastAPI app using uv run (via python -m to avoid PATH issues)
+# Pass -m to tell uv to run a Python module target of the form module:callable
+CMD ["uv", "run", "uvicorn", "server.main:app", "--host", "0.0.0.0", "--cport", "8080" ,"--reload"]

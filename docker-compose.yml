@@ -17,18 +17,20 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgres://reflectly:reflectly123@db:5432/reflectly
+      DATABASE_URL: postgresql+asyncpg://root:secretKey@db:5432/reflectly
 
   db:
     image: postgres:16
     container_name: postgres
     restart: always
     environment:
-      POSTGRES_USER: reflectly
-      POSTGRES_PASSWORD: reflectly123
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: secretKey
       POSTGRES_DB: reflectly
     ports:
       - "5432:5432"
+    expose:
+      - "5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
