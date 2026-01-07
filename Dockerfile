@@ -20,4 +20,4 @@ EXPOSE 8080
 
 # Run FastAPI app using uv run (via python -m to avoid PATH issues)
 # Pass -m to tell uv to run a Python module target of the form module:callable
-CMD ["uv", "run", "uvicorn", "server.main:app", "--host", "0.0.0.0", "--cport", "8080" ,"--reload"]
+CMD ["uv", "run", "uvicorn", "server.main:app", "--host", "0.0.0.0", "--port", "8080" ,"--reload"]
