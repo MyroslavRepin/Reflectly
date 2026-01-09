@@ -18,9 +18,10 @@ class Settings(BaseSettings):
     jwt_access_cookie_name: str = Field(default="access_token")
     jwt_refresh_cookie_name: str = Field(default="refresh_token")
     jwt_access_token_expire_seconds: int = Field(default=30)
-    jwt_token_location: str = Field(default="cookies")
+    jwt_token_location: list[str]
     jwt_cookie_csrf_protect: bool = Field(default=False)
     jwt_access_token_expires_seconds: int = Field(default=30)
+    jwt_algorithm: str = Field(default="HS256")
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 
