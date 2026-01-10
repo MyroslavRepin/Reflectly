@@ -1,4 +1,5 @@
 import os
+from os import name
 
 from fastapi import APIRouter, Request, Depends, Form
 from fastapi.templating import Jinja2Templates
@@ -11,7 +12,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, or_
 
 from server.core.config import settings
-from server.core.jwt_config import auth
+# from server.core.jwt_config import auth
+from server.core.jwt_config import get_authx
 from server.core.jwt_service import JWTService
 from server.db.models.users import User
 from server.db.sessions import get_db
@@ -21,13 +23,14 @@ from server.db.repositories.users import UserRepository
 from server.core.logging_config import logger
 from passlib.hash import argon2
 
-router = APIRouter()
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FRONTEND_DIR = os.path.abspath(os.path.join(
     BASE_DIR, "..", "..", "..", "frontend"))
 
 templates = Jinja2Templates(directory=os.path.join(FRONTEND_DIR, "templates/routes"))
+
+router = APIRouter()
 
 jwt_service = JWTService()
 
@@ -91,8 +94,6 @@ async def login(request: Request):
 
 @router.post("/login")
 async def login_post(
-        response: Response,
-        request: Request,
         db: AsyncSession = Depends(get_db),
         login: str = Form(...),
         password: str = Form(...)
@@ -130,11 +131,32 @@ async def login_post(
             detail="Invalid login or password"
         )
 
-    access_token = jwt_service.create_access_token(user_id=user.id)
-    refresh_token = jwt_service.create_refresh_token(user_id=user.id)
-    jwt_service.set_cokies(access_token, refresh_token, response)
+    auth = get_authx()
 
-    return RedirectResponse('/dashboard', status_code=303)
+    access_token = auth.create_access_token(uid=str(user.id))
+    refresh_token = auth.create_refresh_token(uid=str(user.id))
+
+
+    redirect_response = RedirectResponse("/dashboard", status_code=303)
+
+    redirect_response.set_cookie(
+        key=settings.jwt_access_cookie_name,
+        value=access_token,
+        httponly=True,
+        samesite="none",
+        secure=True,
+        path="/",
+    )
+    redirect_response.set_cookie(
+        key=settings.jwt_refresh_cookie_name,
+        value=refresh_token,
+        httponly=True,
+        samesite="none",
+        secure=True,
+        path="/",
+    )
+    return redirect_response
+
 
 # Logout API
 @router.post("/logout")

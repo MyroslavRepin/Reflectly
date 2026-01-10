@@ -6,6 +6,7 @@ from loguru import logger
 from dotenv import load_dotenv
 
 from server.app.middleware.refresh_tokens import AutoRefreshMiddleware
+from server.core.config import settings
 from server.core.jwt_config import auth
 from server.core.jwt_service import JWTService
 
@@ -81,3 +82,7 @@ app.include_router(playground_router)
 app.include_router(auth_router)
 app.include_router(dashboard_router)
 app.include_router(refresh_tokens_router)
+
+if "__main__" == __name__:
+    import uvicorn
+    uvicorn.run(app, host=settings.server_host, port=settings.server_port, reload=settings.server_reload)

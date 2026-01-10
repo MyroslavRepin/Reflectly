@@ -23,6 +23,11 @@ class Settings(BaseSettings):
     jwt_access_token_expires_seconds: int = Field(default=30)
     jwt_algorithm: str = Field(default="HS256")
 
+    server_host: str = Field(default="0.0.0.0")
+    server_port: int = Field(default=8000)
+    server_debug: bool = Field(default=True)
+    server_reload: bool = Field(default=True)
+
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 
     @property

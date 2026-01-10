@@ -1,34 +1,36 @@
+from typing import Any, Optional
+
 from fastapi import Depends, Request, Response, HTTPException
 from authx.main import AuthX
-from server.core.jwt_service import JWTService
+
 from server.core.config import settings
+from server.core.jwt_service import JWTService
 from server.core.jwt_config import AuthX
+from authx import exceptions as authx_exceptions
+from server.core.jwt_config import auth
+from server.core.logging_config import logger
+from jose import JWTError, jwt
 
 auth: AuthX
 jwt_service = JWTService()
 
-async def get_current_user(request: Request, response: Response):
-    # Попытка получить user_id из access токена
+from fastapi import Request, Response, HTTPException, Depends
+
+async def get_current_user(
+    request: Request, response: Response,
+):
     try:
-        payload = await auth.access_token_required(request)
-        user_id = payload["sub"]
-        return user_id
-    except Exception:
-        # Если access просрочен — пробуем refresh
-        try:
-            refresh_payload = await auth.refresh_token_required(request)
-            user_id = refresh_payload["sub"]
+        access_token = await auth.get_access_token_from_request(request)
 
-            # Создаём новый access и ставим в cookie
-            new_access = jwt_service.create_access_token(user_id)
-            response.set_cookie(
-                key=settings.jwt_access_cookie_name,
-                value=new_access,
-                httponly=True,
-                samesite="lax",
-            )
+        payload = auth.verify_token(access_token, verify_csrf=False)
 
-            return user_id
-        except Exception:
-            raise HTTPException(status_code=401, detail="Authentication failed")
+        payload_dict = dict(payload)
+        logger.debug(payload_dict)
 
+        # if payload.type != "access":
+        #     raise Exception("Not an access token")
+
+        return {"valid": True, "user_id": payload.sub, "payload": payload}
+
+    except Exception as e:
+        return {"valid": False, "error": str(e)}

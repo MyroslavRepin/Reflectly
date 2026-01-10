@@ -88,13 +88,18 @@ class JWTService:
         response.set_cookie(
             key=settings.jwt_access_cookie_name,
             value=access_token,
+            httponly=True,
+            path="/",
             samesite="lax",
         )
         response.set_cookie(
             key=settings.jwt_refresh_cookie_name,
             value=refresh_token,
+            httponly=True,
+            path="/",
             samesite="lax",
         )
+
         logger.debug("Cookies set")
         return response
 
