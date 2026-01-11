@@ -28,7 +28,7 @@ jwt_service = JWTService()
 async def dashboard(
     user_id: str = Depends(get_current_user),
 ):
-    return user_id
+    return templates.TemplateResponse("dashboard-simple.html", {"request": {}, "user_id": user_id})
     # try:
     #     access_token = await auth.get_access_token_from_request(request)
     #
