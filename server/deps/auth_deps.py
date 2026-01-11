@@ -19,18 +19,34 @@ from fastapi import Request, Response, HTTPException, Depends
 async def get_current_user(
     request: Request, response: Response,
 ):
+    # Attempts access token authentication; falls back to refresh
     try:
         access_token = await auth.get_access_token_from_request(request)
 
         payload = auth.verify_token(access_token, verify_csrf=False)
+        logger.debug(f"Access token is valid: {payload}")
 
-        payload_dict = dict(payload)
-        logger.debug(payload_dict)
-
-        # if payload.type != "access":
-        #     raise Exception("Not an access token")
+        if payload.type != "access":
+            raise Exception("Not an access token")
 
         return {"valid": True, "user_id": payload.sub, "payload": payload}
 
     except Exception as e:
-        return {"valid": False, "error": str(e)}
+        logger.debug(f"Access token is invalid, attempting refresh: {e}")
+        refresh_token = await auth.get_refresh_token_from_request(request)
+        try:
+            payload = auth.verify_token(refresh_token, verify_csrf=False)
+            logger.debug(f"Refresh token is valid: {payload}")
+            new_access_token = auth.create_access_token(uid=payload.sub)
+            logger.debug(f"Generated new access token")
+            response.set_cookie(
+                key=settings.jwt_access_cookie_name,
+                value=new_access_token,
+                httponly=True,
+                samesite="lax",
+            )
+            logger.debug("Cookies set")
+            return {"valid": True, "user_id": payload.sub, "payload": payload}
+        except Exception as e:
+            return { "valid": False, "error": str(e)}
+
