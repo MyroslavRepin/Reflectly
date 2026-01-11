@@ -85,7 +85,7 @@
         </label>
       </div>
       
-      <button type="submit" class="btn btn-primary btn-large btn-block">
+      <button type="submit" class="btn btn-primary btn-large btn-block" id="signupBtn">
         CREATE ACCOUNT
       </button>
     </form>
@@ -100,5 +100,22 @@
     </div>
   </div>
 </div>
+<script>
+  let passwordObj = document.getElementById('password')
+  let confirmPasswordObj = document.getElementById('confirm-password')
+  let signupBtn = document.getElementById('signupBtn')
+
+  function validatePassword() {
+    if (passwordObj.value !== confirmPasswordObj.value) {
+      signupBtn.disabled = true;
+    }
+    else {
+      signupBtn.disabled = false;
+    }
+  }
+  passwordObj.addEventListener('input', validatePassword);
+  confirmPasswordObj.addEventListener('input', validatePassword);
+
+</script>
 
 {% endblock %}
