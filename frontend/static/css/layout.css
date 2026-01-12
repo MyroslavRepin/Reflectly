@@ -1,0 +1,234 @@
+/* ========================================
+   Layout & Structural Styles
+   ======================================== */
+
+/* Container */
+.container {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0 var(--spacing-xl);
+}
+
+/* Dashboard Layout */
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: var(--sidebar-width);
+    background: var(--color-primary);
+    padding: var(--spacing-3xl) var(--spacing-xl);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    padding: var(--spacing-4xl);
+}
+
+/* Grid Layouts */
+.projects-grid,
+.clients-grid,
+.features-grid {
+    display: grid;
+    gap: var(--spacing-xl);
+}
+
+.projects-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    margin-bottom: var(--spacing-3xl);
+}
+
+.clients-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.features-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    margin-top: var(--spacing-5xl);
+}
+
+/* Flex Layouts */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-4xl);
+}
+
+.tracking-header,
+.section-header,
+.clients-header,
+.projects-header,
+.settings-header,
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.tracking-header {
+    margin-bottom: var(--spacing-3xl);
+}
+
+.section-header,
+.clients-header {
+    margin-bottom: var(--spacing-xl);
+}
+
+.projects-header {
+    margin-bottom: var(--spacing-5xl);
+}
+
+.settings-header {
+    margin-bottom: var(--spacing-3xl);
+}
+
+.project-header {
+    margin-bottom: var(--spacing-lg);
+}
+
+.clients-header {
+    align-items: center;
+}
+
+.tracking-controls,
+.social-login {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.tracking-controls {
+    gap: var(--spacing-md);
+}
+
+.social-login {
+    flex-direction: column;
+    margin-bottom: var(--spacing-3xl);
+}
+
+/* Navigation */
+.nav-menu {
+    flex: 1;
+}
+
+.nav-links {
+    display: flex;
+    gap: var(--spacing-4xl);
+    align-items: center;
+}
+
+/* User Profile */
+.user-profile {
+    background: var(--color-secondary);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-3xl);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+.user-info {
+    flex: 1;
+}
+
+/* Status Indicator */
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-xl);
+}
+
+/* Hero Content Layout */
+.hero-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-5xl);
+}
+
+.hero-text {
+    flex: 1;
+    max-width: 600px;
+}
+
+/* Chart Layout */
+.chart {
+    height: 300px;
+    display: flex;
+    align-items: flex-end;
+    gap: var(--spacing-md);
+    padding: var(--spacing-xl) 0;
+}
+
+.chart-bar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+/* Form Layout */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: var(--spacing-2xl);
+}
+
+/* Divider */
+.divider {
+    display: flex;
+    align-items: center;
+    margin: var(--spacing-3xl) 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-base);
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--color-tertiary);
+}
+
+.divider span {
+    padding: 0 var(--spacing-lg);
+}
+
+/* Hamburger Menu */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    cursor: pointer;
+}
+
+/* Mobile Header */
+.mobile-header {
+    display: none;
+    padding: var(--spacing-xl);
+    background: var(--color-primary);
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Rating Stars */
+.rating {
+    display: flex;
+    gap: var(--spacing-xs);
+    margin-top: var(--spacing-xl);
+}
+
