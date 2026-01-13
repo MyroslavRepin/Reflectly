@@ -8,3 +8,9 @@ class UserCreate(BaseModel):
 class UserLogin(BaseModel):
     login: EmailStr | str
     password: str
+
+# Schemas for API's endpoints
+class SignupRequest(BaseModel):
+    username: str
+    email: EmailStr
+    password: str

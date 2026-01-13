@@ -23,6 +23,7 @@ from server.app.api.auth import router as auth_router
 from server.app.api.dashboard import router as dashboard_router
 from server.app.api.v1.refresh_tokens import router as refresh_tokens_router
 from server.app.api.v1.time_entries import router as time_entries_router
+from server.app.api.v1.auth import router as api_auth_router
 
 # === Intercept standard logging and redirect to Loguru ===
 class InterceptHandler(logging.Handler):
@@ -92,6 +93,7 @@ app.include_router(auth_router)
 app.include_router(dashboard_router)
 app.include_router(refresh_tokens_router)
 app.include_router(time_entries_router)
+app.include_router(api_auth_router)
 
 if "__main__" == __name__:
     import uvicorn

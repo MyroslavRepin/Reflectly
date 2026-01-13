@@ -15,6 +15,7 @@ class UserRepository:
             await db.commit()
             await db.refresh(user)
             logger.debug(f"User {user.username} created")
+            return user
         except Exception as e:
             logger.error(f"Error creating user: {e}")
             await db.rollback()
