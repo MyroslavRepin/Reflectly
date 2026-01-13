@@ -1,19 +1,33 @@
 # Reflectly - Time Reflection and Journaling
 
-**Version:** 0.1.1
+**Version:** 0.2.0
 
 ## Description
 A time reflection and journaling web application designed to help you track work sessions, plan tasks, keep a productivity journal, and analyze progress through charts and statistics.
 
 ## Features
 
-### Implemented (v0.1.1)
+### Implemented (v0.2.0)
+- **Time Tracking**
+  - Start/stop timer functionality
+  - Time entries database model
+  - API endpoints for timer control (`/api/v1/timer/start`, `/api/v1/timer/stop`, `/api/v1/timer/current`)
+  - Track coding sessions with timestamps
+  - User-specific time entry tracking
+  
 - **User Authentication**
   - Secure signup and login system
   - JWT-based authentication with access and refresh tokens
   - Password hashing with Argon2
   - HttpOnly cookies for secure token storage
   - Automatic token refresh middleware
+  - Token refresh endpoint (`/auth/refresh`)
+  
+- **Dashboard**
+  - Modern dashboard UI templates
+  - Session time tracking interface
+  - Project overview sections
+  - Responsive design for mobile and desktop
   
 - **User Management**
   - User registration with email and username
@@ -27,12 +41,13 @@ A time reflection and journaling web application designed to help you track work
   - Docker containerization support
   - Comprehensive logging with Loguru
   - Environment-based configuration
+  - Time entries table with foreign key relationships
 
 ### Planned
-- Track time per coding session
 - Productivity journal
 - Charts and statistics for time and tasks
 - Task planning and prioritization
+- Project management and categorization
 - Optional AI journal analysis
 
 ## Tech Stack

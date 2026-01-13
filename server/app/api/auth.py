@@ -90,7 +90,7 @@ async def signup_post(
 
 @router.get("/login", response_class=HTMLResponse)
 async def login(request: Request):
-    return templates.TemplateResponse("brutalist-login.html", {"request": request})
+    return templates.TemplateResponse("login.html", {"request": request})
 
 @router.post("/login")
 async def login_post(

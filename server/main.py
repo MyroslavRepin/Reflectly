@@ -14,6 +14,7 @@ from server.core.jwt_service import JWTService
 load_dotenv()
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from server.app.api.landing import router as landing_router
@@ -21,6 +22,7 @@ from server.app.api.playground import router as playground_router
 from server.app.api.auth import router as auth_router
 from server.app.api.dashboard import router as dashboard_router
 from server.app.api.v1.refresh_tokens import router as refresh_tokens_router
+from server.app.api.v1.time_entries import router as time_entries_router
 
 # === Intercept standard logging and redirect to Loguru ===
 class InterceptHandler(logging.Handler):
@@ -60,6 +62,13 @@ sys.excepthook = handle_exception
 
 # Creating Main App
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://localhost:8080"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Paths settings
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -82,6 +91,7 @@ app.include_router(playground_router)
 app.include_router(auth_router)
 app.include_router(dashboard_router)
 app.include_router(refresh_tokens_router)
+app.include_router(time_entries_router)
 
 if "__main__" == __name__:
     import uvicorn
