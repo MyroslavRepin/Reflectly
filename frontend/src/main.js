@@ -6,7 +6,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import './assets/css/variables.css';
 import LandingPage from './components/LandingPage.vue'
 import LoginPage from './components/LoginPage.vue';
-import SignupPage from "./components/SignupPage.vue";
+import SignupPage from './components/SignupPage.vue';
+import DashboardLayout from './components/DashboardLayout.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -26,6 +27,11 @@ const router = createRouter({
             path: '/signup',
             component: SignupPage
         },
+        {
+            name: 'Dashboard',
+            path: '/dashboard',
+            component: DashboardLayout
+        }
     ]
 });
 
