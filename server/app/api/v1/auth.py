@@ -34,6 +34,7 @@ async def signup_api(
             email=user_data.email,
             hashed_password=hash_password(user_data.password)
         )
+
         created_user = await repo.create(db, **user.dict())
         logger.debug(f"User {user_data.username} created")
         data = {
@@ -67,7 +68,7 @@ async def signup_api(
 
 
 @router.post("/api/v1/auth/login")
-async def login_post(
+async def login_api(
         user_credentials: UserLogin,
         response: Response,
         db: AsyncSession = Depends(get_db),
@@ -87,14 +88,12 @@ async def login_post(
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid login or password"
+            detail="No user found with this username or email"
         )
-    logger.info(f"user.hashed_password: {user.hashed_password}")
-    logger.info(f"hashed_password (form): {user_credentials.password}")
 
     if not argon2.verify(user_credentials.password, user.hashed_password):
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
+            status_code=401,
             detail="Invalid login or password"
         )
 
@@ -106,7 +105,7 @@ async def login_post(
     jwt_service.set_cokies(
         access_token=access_token,
         refresh_token=refresh_token,
-        response=response
+        response=response,
     )
 
     data = {
@@ -122,7 +121,7 @@ async def login_post(
 
 # Logout API
 @router.post("/api/v1/auth/logout")
-async def logout(response: Response):
+async def logout_api(response: Response):
     response.delete_cookie(
         key=settings.jwt_access_cookie_name,
         path="/",

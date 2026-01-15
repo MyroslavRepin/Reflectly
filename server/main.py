@@ -65,7 +65,7 @@ sys.excepthook = handle_exception
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:8080"],
+    allow_origins=["http://localhost:5173", "http://localhost:8080"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -89,7 +89,7 @@ app.mount("/assets", StaticFiles(directory=os.path.join(FRONTEND_DIR,
 # app.include_router(auth_router)
 app.include_router(landing_router)
 app.include_router(playground_router)
-app.include_router(auth_router)
+# app.include_router(auth_router)
 app.include_router(dashboard_router)
 app.include_router(refresh_tokens_router)
 app.include_router(time_entries_router)

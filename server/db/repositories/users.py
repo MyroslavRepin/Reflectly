@@ -20,6 +20,7 @@ class UserRepository:
             logger.error(f"Error creating user: {e}")
             await db.rollback()
             raise
+
     async def get_user_by_id(self, db: AsyncSession, user_id: int):
         """
         Returns user if found by ID, otherwise None.

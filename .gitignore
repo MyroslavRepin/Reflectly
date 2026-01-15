@@ -34,3 +34,5 @@ Thumbs.db
 .xml
 
 fonts/
+
+node_modules/
