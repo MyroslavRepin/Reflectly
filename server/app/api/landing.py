@@ -8,10 +8,10 @@ router = APIRouter()
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 
-FRONTEND_DIR = PROJECT_ROOT / "frontend"
+FRONTEND_DIR = PROJECT_ROOT / "frontend_backup"
 
 templates = Jinja2Templates(
-    directory=FRONTEND_DIR / "templates/routes"
+    directory=FRONTEND_DIR / "templates_backup/templates/routes"
 )
 
 @router.get("/", response_class=HTMLResponse)

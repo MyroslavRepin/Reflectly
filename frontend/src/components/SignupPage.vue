@@ -311,4 +311,3 @@ const sendSignupRequest = async () => {
   font-size: var(--font-size-sm);
 }
 </style>
-

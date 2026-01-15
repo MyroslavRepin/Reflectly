@@ -1,12 +1,12 @@
 import { createApp } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
 import './style.css'
 import App from './App.vue'
+import { createRouter, createWebHistory } from 'vue-router'
+
 import './assets/css/variables.css';
 import LandingPage from './components/LandingPage.vue'
 import LoginPage from './components/LoginPage.vue';
 import SignupPage from "./components/SignupPage.vue";
-
 
 const router = createRouter({
     history: createWebHistory(),

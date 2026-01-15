@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UNAUTHORIZED — ACCESS DENIED</title>
+  <title>429 — TOO MANY REQUESTS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
@@ -40,7 +40,7 @@
 
     .error-code {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(80px, 15vw, 120px);
+      font-size: clamp(120px, 20vw, 200px);
       font-weight: 700;
       line-height: 1;
       letter-spacing: -0.02em;
@@ -90,8 +90,6 @@
       text-transform: uppercase;
       border: 3px solid #000000;
       transition: all 0.2s ease-in-out;
-      margin-right: 16px;
-      margin-bottom: 16px;
     }
 
     .btn-home:hover {
@@ -101,16 +99,6 @@
 
     .btn-home:active {
       transform: translate(2px, 2px);
-    }
-
-    .btn-secondary {
-      background: #FFFFFF;
-      color: #000000;
-    }
-
-    .btn-secondary:hover {
-      background: #000000;
-      color: #FFFFFF;
     }
 
     @media (max-width: 768px) {
@@ -126,37 +114,22 @@
       .error-description {
         font-size: 16px;
       }
-
-      .btn-home {
-        margin-right: 0;
-        display: block;
-        width: 100%;
-      }
     }
   </style>
 </head>
 <body>
   <div class="error-container">
-    <div class="error-code">DENIED</div>
-    <h1 class="error-title">ACCESS DENIED</h1>
+    <div class="error-code">429</div>
+    <h1 class="error-title">TOO MANY REQUESTS</h1>
     <p class="error-description">
-      You must be logged in to access this page.<br>
-      Please sign in to continue.
+      You've sent too many requests in a short period.<br>
+      Please wait a moment and try again.
     </p>
     <div class="error-meta">
-      AUTHENTICATION REQUIRED — SIGN IN TO PROCEED
+      RATE LIMIT EXCEEDED — SLOW DOWN
     </div>
-    <a href="/login" class="btn-home">SIGN IN</a>
-    <a href="/" class="btn-home btn-secondary">GO TO HOME</a>
+    <a href="/frontend_backup/static" class="btn-home">GO TO HOME</a>
   </div>
 </body>
 </html>
-      <a
-        href="/login"
-        class="inline-block bg-coffee-700 text-black px-6 py-3 rounded-xl font-semibold hover:bg-coffee-800 transition hover:scale-105"
-      >
-        Go to Login
-      </a>
-    </div>
-  </body>
-</html>
+

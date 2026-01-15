@@ -75,7 +75,7 @@ app.add_middleware(
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 FRONTEND_DIR = os.path.abspath(
-    os.path.join(BASE_DIR, "..", "frontend")
+    os.path.join(BASE_DIR, "..", "frontend_backup")
 )
 
 

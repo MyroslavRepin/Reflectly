@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>401 — UNAUTHORIZED</title>
+  <title>500 — SERVER ERROR</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
@@ -90,8 +90,6 @@
       text-transform: uppercase;
       border: 3px solid #000000;
       transition: all 0.2s ease-in-out;
-      margin-right: 16px;
-      margin-bottom: 16px;
     }
 
     .btn-home:hover {
@@ -101,16 +99,6 @@
 
     .btn-home:active {
       transform: translate(2px, 2px);
-    }
-
-    .btn-secondary {
-      background: #FFFFFF;
-      color: #000000;
-    }
-
-    .btn-secondary:hover {
-      background: #000000;
-      color: #FFFFFF;
     }
 
     @media (max-width: 768px) {
@@ -126,29 +114,21 @@
       .error-description {
         font-size: 16px;
       }
-
-      .btn-home {
-        margin-right: 0;
-        display: block;
-        width: 100%;
-      }
     }
   </style>
 </head>
 <body>
   <div class="error-container">
-    <div class="error-code">401</div>
-    <h1 class="error-title">UNAUTHORIZED</h1>
+    <div class="error-code">500</div>
+    <h1 class="error-title">SERVER ERROR</h1>
     <p class="error-description">
-      You need to be authenticated to access this resource.<br>
-      Please sign in to continue.
+      Something went wrong on our end.<br>
+      Our team has been notified and is working to fix the issue.
     </p>
     <div class="error-meta">
-      AUTHENTICATION REQUIRED — SIGN IN TO PROCEED
+      INTERNAL SERVER ERROR — PLEASE TRY AGAIN LATER
     </div>
-    <a href="/login" class="btn-home">SIGN IN</a>
-    <a href="/" class="btn-home btn-secondary">GO TO HOME</a>
+    <a href="/frontend_backup/static" class="btn-home">GO TO HOME</a>
   </div>
 </body>
 </html>
-
