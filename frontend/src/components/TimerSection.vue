@@ -91,6 +91,9 @@ const stopTimerRequest = async () => {
     console.error("Error stopping timer:", error);
   }
 }
+const pauseTimerRequest = async () => {
+
+}
 
 onMounted( () => {
   initTimerFromApi()
@@ -106,31 +109,17 @@ const timerDisplay = computed(() => {
 </script>
 
 <template>
-<!--  <div class="timer-card">-->
-<!--    <div class="timer-header">-->
-<!--      <p class="current-session">Current session</p>-->
-<!--      <p class="session-time">{{ timerDisplay }}</p>-->
-<!--      <div class="timer-controls">-->
-<!--        <button v-on:click="startTimerRequest" v-if="!isTimerRunning">Start Timer</button>-->
-<!--        <button v-on:click="stopTimerRequest" v-if="isTimerRunning">Stop Timer</button>-->
-<!--      </div>-->
-<!--      <p v-show="isError">{{errorMessage}}</p>-->
-<!--    </div>-->
   <div class="tracking-card">
       <div class="tracking-header">
         <div class="left-side-card">
           <div class="current-session">Current Session</div>
-          <div class="session-time" id="sessionTime">0h 00m</div>
-          <div class="session-project">React Dashboard Project</div>
-          <div class="status-indicator">
-            <div class="status-dot"></div>
-            <div class="status-text">Tracking active</div>
-          </div>
+          <div class="session-time" id="sessionTime">{{ timerDisplay }}</div>
+          <div class="session-project">Current task</div>
         </div>
         <div class="tracking-controls">
-          <button class="btn btn-start" id="startBtn" onclick="startTracking()" style="display: inline-block;">Start</button>
-          <button class="btn btn-pause" id="pauseBtn" onclick="pauseTracking()" style="display: none;">Pause</button>
-          <button class="btn btn-stop" id="stopBtn" onclick="stopTracking()" style="display: none;">Stop</button>
+          <button class="btn btn-start" v-if="!isTimerRunning" @click="startTimerRequest">Start</button>
+          <button class="btn btn-pause" v-if="isTimerRunning" @click="pauseTimerRequest">Pause</button>
+          <button class="btn btn-stop" v-if="isTimerRunning" @click="stopTimerRequest">Stop</button>
         </div>
       </div>
   </div>
@@ -138,18 +127,26 @@ const timerDisplay = computed(() => {
 
 <style scoped>
 .tracking-card {
+  margin-top: 15px;
     background: #0a0a0a;
     border-radius: 24px;
     padding: 40px;
     margin-bottom: 30px;
     color: #fff;
-  width: 700px;
+    max-width: 700px;
+    width: 100%;
+  height: 200px;
 }
 .tracking-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 30px;
+}
+.left-side-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 .current-session {
     font-size: 15px;
@@ -166,14 +163,38 @@ const timerDisplay = computed(() => {
     color: #999;
     margin-top: 8px;
 }
-.status-indicator {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 20px;
-}
 .tracking-controls {
-    display: flex;
-    gap: 12px;
+  display: flex;
+  gap: 16px;
+}
+.btn-start {
+    background: #ffffff;
+  color: #000000;
+}
+.btn-start:hover {
+  box-shadow: #9e9e9d 0px 0px 7px;
+  border-color: transparent;
+}
+.btn {
+  color: #000000;
+}
+.btn:hover {
+  transition: all 0.3s ease-in-out;
+}
+.btn-stop:hover {
+  background-color: #be2222;
+}
+.btn-pause {
+  border-color: #222222;
+  border-width: 1.5px;
+  background: #1a1a1a;
+  color: #FFFFFF;
+}
+.btn-pause:hover {
+  background-color: #222222;
+}
+.btn-stop {
+    background: #dc2626;
+  color: #FFFFFF;
 }
 </style>

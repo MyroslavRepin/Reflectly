@@ -74,8 +74,6 @@ async def login_api(
         db: AsyncSession = Depends(get_db),
     ):
 
-    logger.info(user_credentials)
-
     stmt = select(User).where(
         or_(
             User.email == user_credentials.login,

@@ -55,13 +55,15 @@ const sendSignupRequest = async () => {
 </script>
 
 <template>
-  <div class="login-container">
-    <div class="decorative-plus plus-1">+</div>
-    <div class="decorative-plus plus-2">+</div>
-    <div class="decorative-plus plus-3">+</div>
-    <div class="decorative-plus plus-4">+</div>
+  <main>
+    <div class="container">
+      <div class="login-container">
+        <div class="decorative-plus plus-1">+</div>
+        <div class="decorative-plus plus-2">+</div>
+        <div class="decorative-plus plus-3">+</div>
+        <div class="decorative-plus plus-4">+</div>
 
-    <div class="login-content">
+        <div class="login-content">
       <div class="logo">reflectly<span class="registered">®</span></div>
       <p class="subtitle">Time Tracker</p>
       <p class="tagline" >{{tagline}}</p>
@@ -124,9 +126,24 @@ const sendSignupRequest = async () => {
       <div class="footer-text">© {{year}} Reflectly Tracker</div>
     </div>
   </div>
+    </div>
+  </main>
 </template>
 
 <style scoped>
+main {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .login-container {
   background: var(--color-primary);
   border-radius: var(--radius-xl);

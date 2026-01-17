@@ -115,3 +115,7 @@ async def get_current_timer(
         "started_at": running_entry.started_at,
     }
     return data
+
+@router.post("/api/v1/timer/pause")
+async def pause_timer(jwt_decoded: str = Depends(get_current_user)):
+    return "pause"

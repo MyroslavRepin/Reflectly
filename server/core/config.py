@@ -24,7 +24,7 @@ class Settings(BaseSettings):
     jwt_algorithm: str = Field(default="HS256")
 
     server_host: str = Field(default="0.0.0.0")
-    server_port: int = Field(default=8000)
+    server_port: int = Field(default=8080)
     server_debug: bool = Field(default=True)
     server_reload: bool = Field(default=True)
 

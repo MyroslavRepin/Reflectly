@@ -24,9 +24,13 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--color-off-white);
+}
+
+#app {
+  width: 100%;
   min-height: 100vh;
 }
 
@@ -46,9 +50,6 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
-  border-color: #646cff;
-}
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -58,11 +59,17 @@ button:focus-visible {
   padding: 2em;
 }
 
-#app {
-  max-width: 1280px;
+.container {
+  max-width: var(--container-max-width);
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 0 var(--spacing-xl);
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 var(--spacing-md);
+  }
 }
 
 @media (prefers-color-scheme: light) {

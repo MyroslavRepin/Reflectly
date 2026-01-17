@@ -31,7 +31,7 @@ const sendLoginRequest = async () => {
       withCredentials: true,
     });
     // Note: axios throws an error for non-2xx status codes, handle errors in catch block
-    tagline.value = "Login successful! Redirecting...";
+    router.push('/dashboard')
     console.log(response);
   } catch (error) {
     if (!error.response) {
@@ -55,13 +55,15 @@ const sendLoginRequest = async () => {
 </script>
 
 <template>
-  <div class="login-container">
-    <div class="decorative-plus plus-1">+</div>
-    <div class="decorative-plus plus-2">+</div>
-    <div class="decorative-plus plus-3">+</div>
-    <div class="decorative-plus plus-4">+</div>
+  <main>
+    <div class="container">
+      <div class="login-container">
+        <div class="decorative-plus plus-1">+</div>
+        <div class="decorative-plus plus-2">+</div>
+        <div class="decorative-plus plus-3">+</div>
+        <div class="decorative-plus plus-4">+</div>
 
-    <div class="login-content">
+        <div class="login-content">
       <div class="logo">reflectly<span class="registered">®</span></div>
       <p class="subtitle">Time Tracker</p>
       <p class="tagline" :class="{ error: isError }" >{{tagline}}</p>
@@ -115,9 +117,24 @@ const sendLoginRequest = async () => {
       <div class="footer-text">© {{year}} Reflectly Tracker</div>
     </div>
   </div>
+    </div>
+  </main>
 </template>
 
 <style scoped>
+main {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .login-container {
   background: var(--color-primary);
   border-radius: var(--radius-xl);
