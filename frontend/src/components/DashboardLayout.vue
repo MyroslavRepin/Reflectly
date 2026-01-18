@@ -1,6 +1,7 @@
 <script setup>
 import TimerSection from "./TimerSection.vue";
 import SideMenuDashboard from "./DashboardSideMenu.vue";
+import DashboardUserGreeting from "./DashboardUserGreeting.vue";
 </script>
 
 <template>
@@ -11,6 +12,7 @@ import SideMenuDashboard from "./DashboardSideMenu.vue";
           <SideMenuDashboard />
         </aside>
         <main class="main-content">
+          <DashboardUserGreeting />
           <TimerSection />
         </main>
       </div>
@@ -34,7 +36,7 @@ import SideMenuDashboard from "./DashboardSideMenu.vue";
 .dashboard-wrapper {
   display: flex;
   flex-direction: row;
-  gap: 40px;
+  gap: 100px;
   width: 100%;
   min-height: 600px;
 }
@@ -48,6 +50,7 @@ import SideMenuDashboard from "./DashboardSideMenu.vue";
   flex: 1;
   display: flex;
   //align-items: center;
-  justify-content: center;
+  //justify-content: center;
+  flex-direction: column;
 }
 </style>
