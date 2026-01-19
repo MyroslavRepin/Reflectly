@@ -1,0 +1,10 @@
+# SSL certificates and certbot files
+certbot/conf/*
+certbot/www/*
+
+# Keep directory structure
+!certbot/conf/.gitkeep
+!certbot/www/.gitkeep
+
+# Backup configs
+*.bak

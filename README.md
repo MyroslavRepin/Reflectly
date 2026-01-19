@@ -128,6 +128,21 @@ The backend will run on `http://localhost:8000` and the frontend on `http://loca
 docker-compose up -d
 ```
 
+## Deployment
+
+For production deployment on VPS with Nginx and SSL:
+
+**Quick deployment guide (Russian):** [deploy/README.ru.md](deploy/README.ru.md)  
+**Detailed deployment guide (English):** [deploy/README.md](deploy/README.md)
+
+```bash
+# One-time setup: Get SSL certificate
+./deploy/deploy.sh init
+
+# Deploy/update application
+./deploy/deploy.sh deploy
+```
+
 ## Configuration
 Key environment variables (see `.env.example`):
 - `DATABASE_URL` - PostgreSQL connection string
