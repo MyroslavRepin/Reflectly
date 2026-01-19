@@ -6,8 +6,8 @@ services:
     container_name: reflectly-nginx
     restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
+      - "81:80"
+      - "444:443"
     volumes:
       - ./deploy/nginx/conf.d:/etc/nginx/conf.d:ro
       - ./deploy/certbot/conf:/etc/letsencrypt:ro
