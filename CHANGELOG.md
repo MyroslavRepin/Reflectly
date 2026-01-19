@@ -5,6 +5,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - Unreleased (Work in Progress)
+
+**Note:** This version is currently under development and not yet finished.
+
+### Added
+- **Vue 3 Frontend**
+  - Initial Vue 3 setup with Vite build system
+  - Vue Router for client-side routing
+  - Authentication pages (Login, Signup)
+  - Landing page component
+  - Dashboard layout component with side menu
+  - User greeting component for dashboard
+  - Timer section component for time tracking
+  
+- **Authentication API (JSON)**
+  - JSON-based signup endpoint
+  - JSON-based login endpoint
+  - Logout endpoint
+  - API endpoints separated from server-side rendered routes
+
+### Changed
+- **Frontend Architecture Refactor**
+  - Migrated from server-side rendering (Jinja2) to Vue 3 SPA
+  - Moved legacy server-side HTML/CSS templates to `frontend_backup/`
+  - Restructured Vue.js project with component-based architecture
+  - Enhanced landing page design with modern UI
+  - Improved dashboard layout structure
+  
+- **Project Organization**
+  - Separated frontend concerns: Vue components vs legacy templates
+  - Better file organization for maintainability
+  - Version bumped to 0.3.0
+
+### In Progress
+- Completing Vue component integration
+- Connecting Vue frontend with FastAPI backend
+- Migrating remaining features from legacy templates
+- Testing and debugging new architecture
+
 ## [0.2.0] - 2026-01-12
 
 ### Added

@@ -1,13 +1,29 @@
 # Reflectly - Time Reflection and Journaling
 
-**Version:** 0.2.0
+**Version:** 0.3.0 (Work in Progress)
+
+> **Note:** This version is currently under active development and not yet finished. Some features may be incomplete or subject to change.
 
 ## Description
 A time reflection and journaling web application designed to help you track work sessions, plan tasks, keep a productivity journal, and analyze progress through charts and statistics.
 
 ## Features
 
-### Implemented (v0.2.0)
+### Implemented (v0.3.0 - In Progress)
+- **Modern Vue 3 Frontend** (NEW)
+  - Single Page Application (SPA) architecture with Vue 3 and Vite
+  - Vue Router for seamless navigation
+  - Component-based UI architecture
+  - Responsive landing page
+  - Authentication pages (Login/Signup)
+  - Dashboard layout with side navigation
+  - User greeting component
+  - Timer section component
+  
+- **JSON API for Authentication** (NEW)
+  - RESTful API endpoints for signup, login, and logout
+  - Separated from server-side rendering for better API/frontend separation
+  
 - **Time Tracking**
   - Start/stop timer functionality
   - Time entries database model
@@ -24,7 +40,7 @@ A time reflection and journaling web application designed to help you track work
   - Token refresh endpoint (`/auth/refresh`)
   
 - **Dashboard**
-  - Modern dashboard UI templates
+  - Modern dashboard UI (legacy templates in `frontend_backup/`)
   - Session time tracking interface
   - Project overview sections
   - Responsive design for mobile and desktop
@@ -52,7 +68,7 @@ A time reflection and journaling web application designed to help you track work
 
 ## Tech Stack
 - **Backend:** FastAPI + PostgreSQL + SQLAlchemy (async)
-- **Frontend:** Jinja2 Templates (Vue.js planned)
+- **Frontend:** Vue 3 + Vite + Vue Router (migrating from Jinja2 templates)
 - **Authentication:** JWT tokens with AuthX
 - **Database:** PostgreSQL with asyncpg driver
 - **Migrations:** Alembic
@@ -64,18 +80,21 @@ A time reflection and journaling web application designed to help you track work
 
 ## Prerequisites
 - Python >= 3.14
+- Node.js >= 18.0.0 (for Vue 3 frontend)
 - PostgreSQL
 - Docker (optional)
 
 ## Installation
 
 ### Development Setup
+
+#### Backend Setup
 ```bash
 # Clone repository
 git clone <repo-url>
 cd Reflectly
 
-# Install dependencies using uv
+# Install Python dependencies using uv
 uv sync
 
 # Set up environment variables
@@ -88,6 +107,20 @@ alembic upgrade head
 # Start development server
 uvicorn server.main:app --reload
 ```
+
+#### Frontend Setup
+```bash
+# Navigate to frontend directory
+cd frontend
+
+# Install Node.js dependencies
+npm install
+
+# Start Vue development server
+npm run dev
+```
+
+The backend will run on `http://localhost:8000` and the frontend on `http://localhost:5173`
 
 ### Docker Setup
 ```bash
@@ -110,19 +143,43 @@ Reflectly/
 ├── server/
 │   ├── main.py                 # FastAPI application entry point
 │   ├── app/
-│   │   ├── api/               # API route handlers
+│   │   ├── api/               # API route handlers (v1)
 │   │   └── middleware/        # Custom middleware
 │   ├── core/                  # Core configuration and services
+│   │   ├── config.py          # Application configuration
+│   │   ├── jwt_config.py      # JWT configuration
+│   │   └── logging_config.py  # Logging setup
 │   ├── db/                    # Database models and repositories
+│   │   ├── database.py        # Database connection
+│   │   ├── models/            # SQLAlchemy models
+│   │   └── repositories/      # Data access layer
 │   ├── deps/                  # Dependencies and schemas
 │   └── utils/                 # Utility functions
-├── frontend/
-│   ├── static/                # CSS, JS files
-│   └── templates/             # Jinja2 templates
+├── frontend/                  # Vue 3 SPA
+│   ├── src/
+│   │   ├── App.vue            # Root component
+│   │   ├── main.js            # Vue application entry
+│   │   ├── components/        # Vue components
+│   │   │   ├── DashboardLayout.vue
+│   │   │   ├── DashboardSideMenu.vue
+│   │   │   ├── DashboardUserGreeting.vue
+│   │   │   ├── LandingPage.vue
+│   │   │   ├── LoginPage.vue
+│   │   │   ├── SignupPage.vue
+│   │   │   └── TimerSection.vue
+│   │   └── assets/            # Static assets
+│   ├── index.html
+│   ├── vite.config.js         # Vite configuration
+│   └── package.json
+├── frontend_backup/           # Legacy server-side templates
+│   ├── templates/             # Jinja2 templates (deprecated)
+│   └── static/                # Legacy CSS/JS
 ├── alembic/                   # Database migrations
+│   └── versions/
 ├── logs/                      # Application logs
-├── pyproject.toml            # Project dependencies
-└── docker-compose.yml        # Docker configuration
+├── pyproject.toml            # Python dependencies
+├── docker-compose.yml        # Docker configuration
+└── README.md
 ```
 
 ## API Documentation
