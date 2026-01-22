@@ -1,13 +1,13 @@
 # Reflectly - Time Reflection and Journaling
 
-**Version:** 0.2.0
+**Version:** 0.2.1
 
 ## Description
 A time reflection and journaling web application designed to help you track work sessions, plan tasks, keep a productivity journal, and analyze progress through charts and statistics.
 
 ## Features
 
-### Implemented (v0.2.0)
+### Implemented (v0.2.1)
 - **Time Tracking**
   - Start/stop timer functionality
   - Time entries database model
@@ -39,6 +39,7 @@ A time reflection and journaling web application designed to help you track work
   - PostgreSQL database with async support (asyncpg)
   - Alembic migrations for database schema management
   - Docker containerization support
+  - Cloudflare Tunnel integration for secure external access
   - Comprehensive logging with Loguru
   - Environment-based configuration
   - Time entries table with foreign key relationships
@@ -59,6 +60,7 @@ A time reflection and journaling web application designed to help you track work
 - **Logging:** Loguru
 - **Password Hashing:** Argon2
 - **Containerization:** Docker + Docker Compose
+- **Deployment:** Cloudflare Tunnel
 - **Charts / Visualization:** Chart.js / Plotly (planned)
 - **Optional AI Module:** OpenAI API (planned)
 

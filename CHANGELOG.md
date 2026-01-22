@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2026-01-22
+
+### Fixed
+- Server accessibility via Cloudflare Tunnel
+- Docker Compose configuration for cloudflared service
+- Network connectivity between server and Cloudflare Tunnel
+
+### Infrastructure
+- Added cloudflared container to Docker Compose
+- Configured tunnel service with proper dependencies
+- Enabled automatic restart for cloudflared service
+
 ## [0.2.0] - 2026-01-12
 
 ### Added
