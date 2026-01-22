@@ -12,7 +12,7 @@ import DashboardUserGreeting from "./DashboardUserGreeting.vue";
           <SideMenuDashboard />
         </aside>
         <main class="main-content">
-          <DashboardUserGreeting />
+<!--          <DashboardUserGreeting />-->
           <TimerSection />
         </main>
       </div>
