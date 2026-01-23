@@ -138,6 +138,21 @@ Once the server is running, access the interactive API documentation at:
 pytest
 ```
 
+## Deployment
+
+For production deployment with Cloudflare Tunnel and Docker, see [DEPLOY.md](DEPLOY.md).
+
+Quick deployment:
+```bash
+# On the server, copy Cloudflare tunnel files
+sudo mkdir -p /etc/cloudflared
+sudo cp deploy/cloudflared/*.json /etc/cloudflared/
+sudo cp deploy/cloudflared/config.yml /etc/cloudflared/
+
+# Start services
+docker-compose up -d
+```
+
 ## Contributing
 Contributions are welcome! Please ensure:
 - Code follows PEP 8 standards
