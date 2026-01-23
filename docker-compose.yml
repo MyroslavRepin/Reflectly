@@ -41,7 +41,8 @@ services:
     restart: unless-stopped
     command: tunnel run reflectly-tunnel
     volumes:
-      - /etc/cloudflared:/etc/cloudflared
+      - ./deploy/cloudflared:/etc/cloudflared:ro
+    environment:
+      - TUNNEL_ORIGIN_CERT=/etc/cloudflared/cert.pem
     depends_on:
       - server
-

@@ -50,3 +50,4 @@ dist/
 
 # Cloudflare
 deploy/cloudflared/*.json
+deploy/cloudflared/*.pem
