@@ -41,6 +41,7 @@ services:
     restart: unless-stopped
     command: tunnel run reflectly-tunnel
     volumes:
-      - ./deploy/cloudflared:/etc/cloudflared
+      - /etc/cloudflared/:/etc/cloudflared
     depends_on:
       - server
+
