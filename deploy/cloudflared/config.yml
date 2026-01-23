@@ -1,5 +1,5 @@
 tunnel: reflectly-tunnel
-credentials-file: /etc/cloudflared/b6527f78-2aa5-46fc-9e73-786f44810f2d.json
+credentials-file: /etc/cloudflared/<tunnel-uid>.json
 origincert: /etc/cloudflared/cert.pem
 
 ingress:
