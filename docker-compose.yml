@@ -1,29 +1,4 @@
 services:
-#  nginx:
-#    image: nginx:alpine
-#    container_name: reflectly-nginx
-#    restart: unless-stopped
-#    ports:
-#      - "81:80"
-#      - "444:443"
-#    volumes:
-#      - ./deploy/nginx/conf.d:/etc/nginx/conf.d:ro
-#      - ./deploy/certbot/conf:/etc/letsencrypt:ro
-#      - ./deploy/certbot/www:/var/www/certbot:ro
-#      - ./frontend/dist:/var/www/html:ro
-#    depends_on:
-#      - server
-#    networks:
-#      - reflectly
-
-  certbot:
-    image: certbot/certbot
-    container_name: reflectly-certbot
-    volumes:
-      - ./deploy/certbot/conf:/etc/letsencrypt
-      - ./deploy/certbot/www:/var/www/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-
   server:
     build: .
     container_name: reflectly-server
@@ -35,34 +10,23 @@ services:
       driver: json-file
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-#    depends_on:
-#      - db
     environment:
       DATABASE_URL: ${DATABASE_URL:-postgresql+asyncpg://root:secretKey@db:5432/reflectly}
     networks:
-      - reflectly
+      - reflectly_network
     volumes:
       - ./logs:/app/logs
 
-#  db:
-#    image: postgres:16
-#    container_name: reflectly-db
-#    restart: unless-stopped
-#    environment:
-#      POSTGRES_USER: ${POSTGRES_USER:-root}
-#      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secretKey}
-#      POSTGRES_DB: ${POSTGRES_DB:-reflectly}
-#    expose:
-#      - "5432"
-#    volumes:
-#      - pgdata:/var/lib/postgresql/data
-#    networks:
-#      - reflectly
-
+  cloudflared-tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: reflectly-tunnel
+    restart: unless-stopped
+    networks:
+      - reflectly_network
+    env_file:
+      - .env
+    command: tunnel run --token ${CLOUDFLARE_TUNNEL_TOKEN}
 networks:
-  reflectly:
+  reflectly_network:
     driver: bridge
-
-volumes:
-  pgdata:
 

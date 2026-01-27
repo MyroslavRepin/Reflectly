@@ -28,6 +28,9 @@ class Settings(BaseSettings):
     server_debug: bool = Field(default=True)
     server_reload: bool = Field(default=True)
 
+    cloudflared_tunnel_token: str
+    cloudflared_tunnel_name: str
+
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 
     @property
@@ -39,5 +42,4 @@ class Settings(BaseSettings):
         )
 
 
-# Создаём объект settings
 settings = Settings()
