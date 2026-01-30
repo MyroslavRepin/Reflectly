@@ -1,5 +1,6 @@
 import os
 from os import name
+from pathlib import Path
 
 from fastapi import APIRouter, Request, Depends, Form
 from fastapi.templating import Jinja2Templates
@@ -24,11 +25,10 @@ from server.core.logging_config import logger
 from passlib.hash import argon2
 
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-FRONTEND_DIR = os.path.abspath(os.path.join(
-    BASE_DIR, "..", "..", "..", "frontend"))
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+DIST_DIR = PROJECT_ROOT / "frontend" / "dist"
 
-templates = Jinja2Templates(directory=os.path.join(FRONTEND_DIR, "templates/routes"))
+templates = Jinja2Templates(directory=str(DIST_DIR))
 
 router = APIRouter()
 
@@ -37,8 +37,10 @@ jwt_service = JWTService()
 # Signup API
 @router.get("/signup", response_class=HTMLResponse)
 async def signup(request: Request):
-    error = request.query_params.get("error")
-    return templates.TemplateResponse("brutalist-signup.html", {"request": request, "error": error})
+    return templates.TemplateResponse(
+        "index.html",
+        {"request": request}
+    )
 
 
 @router.post('/signup')
@@ -90,7 +92,10 @@ async def signup_post(
 
 @router.get("/login", response_class=HTMLResponse)
 async def login(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request})
+    return templates.TemplateResponse(
+        "index.html",
+        {"request": request}
+    )
 
 @router.post("/login")
 async def login_post(

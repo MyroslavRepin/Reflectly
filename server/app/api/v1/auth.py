@@ -74,6 +74,8 @@ async def login_api(
         db: AsyncSession = Depends(get_db),
     ):
 
+    logger.debug(f"Login attempt for: {user_credentials.login}")
+    
     stmt = select(User).where(
         or_(
             User.email == user_credentials.login,
@@ -84,12 +86,24 @@ async def login_api(
     user = result.scalars().first()
 
     if not user:
+        logger.warning(f"User not found: {user_credentials.login}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="No user found with this username or email"
         )
 
-    if not argon2.verify(user_credentials.password, user.hashed_password):
+    logger.debug(f"User found: {user.username}, verifying password")
+    try:
+        is_valid = argon2.verify(user_credentials.password, user.hashed_password)
+        logger.debug(f"Password verification result: {is_valid}")
+        if not is_valid:
+            logger.warning(f"Invalid password for user: {user.username}")
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid login or password"
+            )
+    except Exception as e:
+        logger.error(f"Password verification error: {e}")
         raise HTTPException(
             status_code=401,
             detail="Invalid login or password"
