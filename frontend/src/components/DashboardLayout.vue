@@ -30,7 +30,7 @@ import DashboardUserGreeting from "./DashboardUserGreeting.vue";
 .container {
   min-height: 100vh;
   display: flex;
-  //align-items: center;
+  /* align-items: center; */
 }
 
 .dashboard-wrapper {
@@ -49,8 +49,8 @@ import DashboardUserGreeting from "./DashboardUserGreeting.vue";
 .main-content {
   flex: 1;
   display: flex;
-  //align-items: center;
-  //justify-content: center;
+  /* align-items: center; */
+  /* justify-content: center; */
   flex-direction: column;
 }
 </style>

@@ -10,8 +10,8 @@ services:
       driver: json-file
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-    environment:
-      DATABASE_URL: ${DATABASE_URL:-postgresql+asyncpg://root:secretKey@db:5432/reflectly}
+    env_file:
+      - .env
     networks:
       - reflectly_network
     volumes:
@@ -23,9 +23,9 @@ services:
     restart: unless-stopped
     networks:
       - reflectly_network
-    env_file:
-      - .env
-    command: tunnel run --token ${CLOUDFLARE_TUNNEL_TOKEN}
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARED_TUNNEL_TOKEN}
+    command: tunnel run
 networks:
   reflectly_network:
     driver: bridge

@@ -13,10 +13,11 @@ from server.core.jwt_service import JWTService
 # Load environment variables from .env file
 load_dotenv()
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.responses import FileResponse
 from server.app.api.landing import router as landing_router
 from server.app.api.playground import router as playground_router
 from server.app.api.auth import router as auth_router
@@ -75,15 +76,12 @@ app.add_middleware(
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 FRONTEND_DIR = os.path.abspath(
-    os.path.join(BASE_DIR, "..", "frontend_backup")
+    os.path.join(BASE_DIR, "..", "frontend", "dist")
 )
 
 
 # Setting static / templates files into FastAPI
-app.mount("/static", StaticFiles(directory=os.path.join(FRONTEND_DIR,
-          "static")), name="static")
-app.mount("/assets", StaticFiles(directory=os.path.join(FRONTEND_DIR,
-          "assets")), name="assets")
+app.mount("/assets", StaticFiles(directory=os.path.join(FRONTEND_DIR, "assets")), name="assets")
 
 
 # app.include_router(auth_router)

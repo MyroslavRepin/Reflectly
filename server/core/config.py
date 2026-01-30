@@ -31,7 +31,11 @@ class Settings(BaseSettings):
     cloudflared_tunnel_token: str
     cloudflared_tunnel_name: str
 
-    model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
+    model_config = {
+        "env_file": ".env",
+        "env_file_encoding": "utf-8",
+        "extra": "ignore"
+    }
 
     @property
     def database_url(self) -> str:
