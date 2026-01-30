@@ -6,17 +6,13 @@ from pathlib import Path
 router = APIRouter()
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
+DIST_DIR = PROJECT_ROOT / "frontend" / "dist"
 
-
-FRONTEND_DIR = PROJECT_ROOT / "frontend_backup"
-
-templates = Jinja2Templates(
-    directory=FRONTEND_DIR / "templates_backup/templates/routes"
-)
+templates = Jinja2Templates(directory=str(DIST_DIR))
 
 @router.get("/", response_class=HTMLResponse)
 async def landing(request: Request):
     return templates.TemplateResponse(
-        "landing.html",
+        "index.html",
         {"request": request}
     )
