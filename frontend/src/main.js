@@ -31,12 +31,12 @@ const router = createRouter({
         {
             name: 'Dashboard',
             path: '/dashboard',
-            component: DashboardLayout
+            component: DashboardLayout,
         },
         {
             name: 'EntryModal',
             path: '/entries/:entry_id',
-            component: EntryModal
+            component: EntryModal,
         }
     ]
 });

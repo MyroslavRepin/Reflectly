@@ -23,7 +23,7 @@ const disabled = computed(() => {
 let year = ref( new Date().getFullYear() );
 const sendSignupRequest = async () => {
   try {
-    const response = await axios.post('http://localhost:8080/api/v1/auth/signup', {
+    const response = await axios.post('https://reflectly.myroslavrepin.com/api/v1/auth/signup', {
       email: formData.value.email,
       username: formData.value.username,
       password: formData.value.password,

@@ -21,7 +21,7 @@ const disabled = computed(() => {
 
 const sendLoginRequest = async () => {
   try {
-    const response = await axios.post('http://localhost:8080/api/v1/auth/login', {
+    const response = await axios.post('https://reflectly.myroslavrepin.com/api/v1/auth/login', {
       login: formData.value.login,
       password: formData.value.password,
     }, {

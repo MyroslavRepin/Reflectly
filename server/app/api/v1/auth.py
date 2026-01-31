@@ -9,6 +9,7 @@ from server.core.jwt_config import get_authx
 from server.core.jwt_service import JWTService
 from server.db.models.users import User
 from server.db.sessions import get_db
+from server.deps.auth_deps import get_current_user
 from server.deps.schemas.users_schemes import UserCreate, UserLogin, SignupRequest
 from server.utils.security.auth import hash_password
 from server.db.repositories.users import UserRepository
@@ -150,3 +151,12 @@ async def logout_api(response: Response):
         "ok": True
     }
     return data
+
+@router.get("/api/v1/auth/verify")
+async def verify_auth(jwt_decoded = Depends(get_current_user)):
+    if jwt_decoded["valid"]:
+        return {"ok": True}
+    if not jwt_decoded["valid"]:
+        return HTTPException(status_code=401, detail="Invalid token")
+    else:
+        return {"ok": False}

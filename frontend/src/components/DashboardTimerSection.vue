@@ -35,7 +35,7 @@ const seconds = computed(() => elapsedSeconds.value % 60)
 async function initTimerFromApi() {
   try {
     const response = await axios.get(
-      'http://localhost:8080/api/v1/timer/current',
+      'https://reflectly.myroslavrepin.com/api/v1/timer/current',
       { withCredentials: true }
     )
 

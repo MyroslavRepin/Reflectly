@@ -4,7 +4,7 @@ import axios from "axios";
 import EntryModal from './EntryModal.vue'
 
 const entries = ref([])
-const serverUrl = 'http://localhost:8080/api/v1/timer/'
+const serverUrl = 'https://reflectly.myroslavrepin/api/v1/timer/'
 const now = ref(new Date())
 const selectedEntry = ref(null)
 const isModalOpen = ref(false)
