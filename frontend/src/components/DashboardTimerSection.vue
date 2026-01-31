@@ -145,9 +145,8 @@ const timerDisplay = computed(() => {
   padding: 40px;
   margin-bottom: 30px;
   color: #fff;
-  max-width: 700px;
   width: 100%;
-  min-height: 200px;  /* Change height to min-height */
+  min-height: 200px;
 }
 .tracking-header {
   display: flex;

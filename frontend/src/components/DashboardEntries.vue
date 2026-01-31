@@ -71,35 +71,47 @@ onMounted(() => {
 })
 </script>
 <template>
-  <header>
-    <h2>Your sessions</h2>
-  </header>
-  <main>
-    <div v-for="entry in entriesWithElapsedTime" :key="entry.id">
-      <div v-if="entry.elapsed" class="entry" @click="openModal(entry)">
-        <p>{{ entry["id"] }}</p>
-        <p>{{ entry.elapsed.hours }}h {{ entry.elapsed.minutes }}m {{ entry.elapsed.seconds }}s</p>
+  <section class="entries-section">
+    <header>
+      <h2>Your sessions</h2>
+    </header>
+    <div class="entries-list">
+      <div v-for="entry in entriesWithElapsedTime" :key="entry.id">
+        <div v-if="entry.elapsed" class="entry" @click="openModal(entry)">
+          <p>{{ entry["id"] }}</p>
+          <p>{{ entry.elapsed.hours }}h {{ entry.elapsed.minutes }}m {{ entry.elapsed.seconds }}s</p>
+        </div>
       </div>
     </div>
-  </main>
 
-  <EntryModal 
-    v-if="isModalOpen && selectedEntry" 
-    :entry="selectedEntry" 
-    @close="closeModal"
-  />
+    <EntryModal 
+      v-if="isModalOpen && selectedEntry" 
+      :entry="selectedEntry" 
+      @close="closeModal"
+    />
+  </section>
 </template>
 <style scoped>
-h2{
-  color: #000;
+.entries-section {
+  width: 100%;
 }
-main{
+
+header {
+  width: 100%;
+}
+
+h2 {
+  color: var(--color-text-primary);
+}
+
+.entries-list {
   display: flex;
   flex-direction: column;
   gap: 1em;
   width: 100%;
 }
-.entry{
+
+.entry {
   display: flex;
   justify-content: space-between;
   background-color: var(--color-secondary);
@@ -107,7 +119,8 @@ main{
   border-radius: 15px;
   color: #FFFFFF;
 }
-.entry:hover{
+
+.entry:hover {
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.7);
   cursor: pointer;
   transition: 0.25s ease-in;

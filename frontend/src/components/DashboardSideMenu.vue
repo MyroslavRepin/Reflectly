@@ -15,8 +15,10 @@
 
 <style scoped>
 .sidebar-menu {
-  margin-top: 15px;
-  margin-bottom: 15px;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  bottom: 15px;
   width: 60px;
   background-color: #0a0a0a;
   color: #000000;

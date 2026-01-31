@@ -61,7 +61,7 @@ function closeModal() {
 }
 
 .modal {
-  background: #0a0a0a;
+  background: #3f403f;
   border-radius: 24px;
   padding: 0;
   max-width: 500px;

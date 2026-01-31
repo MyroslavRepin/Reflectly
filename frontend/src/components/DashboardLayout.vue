@@ -41,6 +41,7 @@ import DashboardEntries from "./DashboardEntries.vue";
   gap: 100px;
   width: 100%;
   min-height: 600px;
+  padding-left: 10px;
 }
 
 .sidebar {
@@ -51,8 +52,7 @@ import DashboardEntries from "./DashboardEntries.vue";
 .main-content {
   flex: 1;
   display: flex;
-  /* align-items: center; */
-  /* justify-content: center; */
   flex-direction: column;
+  align-items: flex-start;
 }
 </style>
