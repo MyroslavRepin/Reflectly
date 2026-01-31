@@ -53,6 +53,8 @@ const entriesWithElapsedTime = computed(() => {
   }))
 })
 
+const totalEntries = computed(() => entries.value.length)
+
 function openModal(entry) {
   selectedEntry.value = entry
   isModalOpen.value = true
@@ -74,6 +76,7 @@ onMounted(() => {
   <section class="entries-section">
     <header>
       <h2>Your sessions</h2>
+      <p>Total {{ totalEntries }}</p>
     </header>
     <div class="entries-list">
       <div v-for="entry in entriesWithElapsedTime" :key="entry.id">
@@ -94,12 +97,19 @@ onMounted(() => {
 <style scoped>
 .entries-section {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 header {
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-
+header p{
+  color: var(--color-text-secondary);
+}
 h2 {
   color: var(--color-text-primary);
 }
@@ -121,7 +131,7 @@ h2 {
 }
 
 .entry:hover {
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.7);
+  //box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.7);
   cursor: pointer;
   transition: 0.25s ease-in;
 }

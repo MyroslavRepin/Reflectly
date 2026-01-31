@@ -25,34 +25,41 @@ import DashboardEntries from "./DashboardEntries.vue";
 <style scoped>
 .dashboard-page {
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
+  background: var(--color-off-white);
+  padding: 0;
+  overflow-x: hidden;
 }
 
 .container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 !important;
+  width: 100%;
   min-height: 100vh;
-  display: flex;
-  /* align-items: center; */
 }
 
 .dashboard-wrapper {
   display: flex;
   flex-direction: row;
-  gap: 100px;
+  gap: 24px;
   width: 100%;
-  min-height: 600px;
-  padding-left: 10px;
+  min-height: 100vh;
+  padding: 15px;
+  //padding-left: 102px;
+  box-sizing: border-box;
 }
 
 .sidebar {
   flex-shrink: 0;
-  display: flex;
+  width: 72px;
 }
 
 .main-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  gap: 24px;
+  max-width: calc(100% - 96px);
+  overflow-x: hidden;
 }
 </style>

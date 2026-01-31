@@ -114,125 +114,340 @@ const timerDisplay = computed(() => {
 
 <template>
   <div class="tracking-card">
-      <div class="tracking-header">
-        <div class="left-side-card">
-          <div class="current-session">Current Session</div>
-          <div class="session-time" id="sessionTime">{{ timerDisplay }}</div>
-          <div class="session-project" v-if="isTimerRunning">Current task</div>
+    <div class="card-glow"></div>
+    
+    <div class="tracking-header">
+      <div class="left-side-card">
+        <div class="status-badge" :class="{ active: isTimerRunning }">
+          <span class="status-dot"></span>
+          {{ isTimerRunning ? 'Active' : 'Idle' }}
         </div>
-        <div class="tracking-controls">
-          <button class="btn btn-start" v-if="!isTimerRunning" @click="startTimerRequest">Start</button>
-          <button class="btn btn-pause" v-if="isTimerRunning" @click="pauseTimerRequest">Pause</button>
-          <button class="btn btn-stop" v-if="isTimerRunning" @click="stopTimerRequest">Stop</button>
+        <div class="session-time">
+          <span class="time-digit">{{ String(hours).padStart(2, '0') }}</span>
+          <span class="time-separator">:</span>
+          <span class="time-digit">{{ String(minutes).padStart(2, '0') }}</span>
+          <span class="time-separator">:</span>
+          <span class="time-digit">{{ String(seconds).padStart(2, '0') }}</span>
         </div>
+        <div class="session-label">{{ isTimerRunning ? 'Time Tracked' : 'Ready to Start' }}</div>
       </div>
-      <div class="bottom-section">
-        <div class="timerForm" v-if="!isTimerRunning">
-          <form>
-            <input id="titleFrom" type="text" placeholder="How do you want call your session?" class="titleForm" v-model="formData.title"/>
-            <textarea id="descriptionForm" placeholder="Tell what you want to do..." class="descriptionForm" v-model="formData.description"/>
-          </form>
-        </div>
+      
+      <div class="tracking-controls">
+        <button class="btn btn-start" v-if="!isTimerRunning" @click="startTimerRequest">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          Start
+        </button>
+        <button class="btn btn-pause" v-if="isTimerRunning" @click="pauseTimerRequest">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <rect x="6" y="4" width="4" height="16"></rect>
+            <rect x="14" y="4" width="4" height="16"></rect>
+          </svg>
+          Pause
+        </button>
+        <button class="btn btn-stop" v-if="isTimerRunning" @click="stopTimerRequest">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <rect x="5" y="5" width="14" height="14"></rect>
+          </svg>
+          Stop
+        </button>
       </div>
+    </div>
+    
+    <div class="bottom-section" v-if="!isTimerRunning">
+      <form class="timer-form">
+        <div class="form-field">
+          <input 
+            id="titleFrom" 
+            type="text" 
+            placeholder="What are you working on?" 
+            class="form-input title-input" 
+            v-model="formData.title"
+          />
+        </div>
+        <div class="form-field">
+          <textarea 
+            id="descriptionForm" 
+            placeholder="Add description (optional)" 
+            class="form-input description-input" 
+            v-model="formData.description"
+          ></textarea>
+        </div>
+      </form>
+    </div>
+    
+    <div class="running-task" v-if="isTimerRunning && formData.title">
+      <div class="task-info">
+        <div class="task-title">{{ formData.title }}</div>
+        <div class="task-description" v-if="formData.description">{{ formData.description }}</div>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .tracking-card {
-  margin-top: 15px;
-  background: #0a0a0a;
+  position: relative;
+  background: linear-gradient(145deg, #0d0d0d 0%, #1a1a1a 100%);
   border-radius: 24px;
-  padding: 40px;
-  margin-bottom: 30px;
+  padding: 48px;
   color: #fff;
   width: 100%;
+  max-width: 100%;
   min-height: 200px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
 }
+
+.tracking-card:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.card-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.tracking-card:hover .card-glow {
+  opacity: 1;
+}
+
 .tracking-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 30px;
+  margin-bottom: 32px;
 }
+
 .left-side-card {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  gap: 12px;
 }
-.current-session {
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #999;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.status-badge.active {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+  border-color: rgba(34, 197, 94, 0.2);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #666;
+  transition: all 0.3s ease;
+}
+
+.status-badge.active .status-dot {
+  background: #22c55e;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.session-time {
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: -3px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-variant-numeric: tabular-nums;
+  background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.time-digit {
+  min-width: 80px;
+  text-align: center;
+}
+
+.time-separator {
+  opacity: 0.5;
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.1; }
+}
+
+.session-label {
   font-size: 15px;
   color: #999;
-  margin-bottom: 8px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
-.session-time {
-  font-size: 48px;
-  font-weight: 700;
-  letter-spacing: -2px;
-}
-.session-project {
-  font-size: 18px;
-  color: #999;
-  margin-top: 8px;
-}
+
 .tracking-controls {
   display: flex;
-  gap: 16px;
+  gap: 12px;
+  flex-wrap: wrap;
 }
-.btn-start {
-  background: #ffffff;
-  color: #000000;
-}
-.btn-start:hover {
-  box-shadow: #9e9e9d 0px 0px 7px;
-  border-color: transparent;
-}
+
 .btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.5;
+}
+
+.btn-start {
+  background: linear-gradient(135deg, #ffffff 0%, #e5e5e5 100%);
   color: #000000;
 }
-.btn:hover {
-  transition: all 0.3s ease-in-out;
+
+.btn-start:hover {
+  //transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(25, 255, 255, 0.3);
 }
-.btn-stop:hover {
-  background-color: #be2222;
+
+.btn-start:active {
+  //transform: translateY(0);
 }
+
 .btn-pause {
-  border-color: #222222;
-  border-width: 1.5px;
-  background: #1a1a1a;
+  background: rgba(255, 255, 255, 0.05);
   color: #FFFFFF;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
 }
+
 .btn-pause:hover {
-  background-color: #222222;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  //transform: translateY(-2px);
 }
+
 .btn-stop {
-  background: #dc2626;
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
   color: #FFFFFF;
 }
-/* Form styles */
-.bottom-section{
+
+.btn-stop:hover {
+  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+  //transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+}
+
+.bottom-section {
+  margin-top: 32px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.timer-form {
   display: flex;
   flex-direction: column;
+  gap: 16px;
 }
-.titleForm, .descriptionForm{
-  border: none;
-  width: 70%;
-  height: 30px;
-  border-radius: 8px;
-  background-color: rgba(43, 43, 47, 0.23);
-  padding-left: 10px;
-  color: #FFFFFF;
-}
-.titleForm::placeholder, .descriptionForm::placeholder{
-  color: #b6b6b6;
-}
-.descriptionForm{
-  padding-top: 10px;
-  margin-top: 10px;
+
+.form-field {
   width: 100%;
-  height: 100px;
-  max-width: 100%;
-  min-width: 100%;
-  max-height: 100px;
+}
+
+.form-input {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #FFFFFF;
+  font-size: 15px;
+  padding: 14px 18px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: rgba(99, 102, 241, 0.5);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.form-input::placeholder {
+  color: #666;
+}
+
+.title-input {
+  font-weight: 500;
+}
+
+.description-input {
   min-height: 100px;
+  max-height: 200px;
+  resize: vertical;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.running-task {
+  margin-top: 32px;
+  padding: 20px 24px;
+  background: rgba(99, 102, 241, 0.05);
+  border-left: 3px solid #6366f1;
+  border-radius: 12px;
+}
+
+.task-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.task-description {
+  font-size: 14px;
+  color: #999;
+  line-height: 1.6;
 }
 </style>
