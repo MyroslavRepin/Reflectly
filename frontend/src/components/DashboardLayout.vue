@@ -1,7 +1,8 @@
 <script setup>
-import TimerSection from "./TimerSection.vue";
+import DashboardTimerSection from "./DashboardTimerSection.vue";
 import SideMenuDashboard from "./DashboardSideMenu.vue";
 import DashboardUserGreeting from "./DashboardUserGreeting.vue";
+import DashboardEntries from "./DashboardEntries.vue";
 </script>
 
 <template>
@@ -13,7 +14,8 @@ import DashboardUserGreeting from "./DashboardUserGreeting.vue";
         </aside>
         <main class="main-content">
 <!--          <DashboardUserGreeting />-->
-          <TimerSection />
+          <DashboardTimerSection />
+          <DashboardEntries />
         </main>
       </div>
     </div>

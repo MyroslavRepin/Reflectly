@@ -8,6 +8,7 @@ import LandingPage from './components/LandingPage.vue'
 import LoginPage from './components/LoginPage.vue';
 import SignupPage from './components/SignupPage.vue';
 import DashboardLayout from './components/DashboardLayout.vue';
+import EntryModal from "./components/EntryModal.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -31,6 +32,11 @@ const router = createRouter({
             name: 'Dashboard',
             path: '/dashboard',
             component: DashboardLayout
+        },
+        {
+            name: 'EntryModal',
+            path: '/entries/:entry_id',
+            component: EntryModal
         }
     ]
 });

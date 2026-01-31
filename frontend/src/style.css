@@ -64,6 +64,7 @@ button:focus-visible {
   margin: 0 auto;
   padding: 0 var(--spacing-xl);
   width: 100%;
+  padding-right: 100px;
 }
 
 @media (max-width: 768px) {

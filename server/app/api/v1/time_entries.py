@@ -16,7 +16,6 @@ from server.db.repositories.entries import TimeEntriesRepository
 from server.db.sessions import get_db
 from server.deps.auth_deps import get_current_user
 from server.deps.schemas.entries_schemas import EntryCreate
-from server.deps.schemas.users_schemes import UserCreate, UserLogin
 from server.core.logging_config import logger
 from sqlalchemy import select
 router = APIRouter()
@@ -119,3 +118,31 @@ async def get_current_timer(
 @router.post("/api/v1/timer/pause")
 async def pause_timer(jwt_decoded: str = Depends(get_current_user)):
     return "pause"
+
+@router.get('/api/v1/timer/')
+async def get_all_sessions(jwt_decoded: str = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+    user_id = jwt_decoded["user_id"]
+    try:
+        stmt = select(entries_repo.model).where(entries_repo.model.user_id == int(user_id))
+        result = await db.execute(stmt)
+        entries = result.scalars().all()
+        if not entries:
+            raise HTTPException(status_code=204, detail="No entries found")
+        return entries
+    except Exception as e:
+        logger.error(f"Error getting entries for user {user_id}: {e}")
+        raise HTTPException(status_code=500, detail="Error getting entries")
+
+@router.get('/api/v1/timer/{entry_id}')
+async def get_timer_by_id(entry_id: int, jwt_decoded: str = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+    user_id = jwt_decoded["user_id"]
+    try:
+        stmt = select(entries_repo.model).where(entries_repo.model.id == entry_id, entries_repo.model.user_id == int(user_id))
+        result = await db.execute(stmt)
+        entry = result.scalars().first()
+        if not entry:
+            raise HTTPException(status_code=404, detail="Entry not found")
+        return entry
+    except Exception as e:
+        logger.error(f"Error getting entry {entry_id} for user {user_id}: {e}")
+        raise HTTPException(status_code=500, detail="Error getting entry")
