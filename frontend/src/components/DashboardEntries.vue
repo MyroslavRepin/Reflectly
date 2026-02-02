@@ -4,7 +4,8 @@ import axios from "axios";
 import EntryModal from './EntryModal.vue'
 
 const entries = ref([])
-const serverUrl = 'https://reflectly.myroslavrepin.com/api/v1/timer/'
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
+const serverUrl = `${apiBaseUrl}/timer/`
 const now = ref(new Date())
 const selectedEntry = ref(null)
 const isModalOpen = ref(false)

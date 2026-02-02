@@ -33,9 +33,10 @@ const minutes = computed(() => Math.floor(elapsedSeconds.value / 60) % 60)
 const seconds = computed(() => elapsedSeconds.value % 60)
 
 async function initTimerFromApi() {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
   try {
     const response = await axios.get(
-      'https://reflectly.myroslavrepin.com/api/v1/timer/current',
+      `${apiBaseUrl}/timer/current`,
       { withCredentials: true }
     )
 
@@ -61,9 +62,9 @@ async function initTimerFromApi() {
 }
 
 const startTimerRequest = async () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
   try {
-    const response = await axios('http://localhost:8080/api/v1/timer/start', {
-      method: 'POST',
+    const response = await axios.post(`${apiBaseUrl}/timer/start`, {}, {
       headers: {
         'Content-Type': 'application/json'
       },
@@ -79,9 +80,9 @@ const startTimerRequest = async () => {
   }
 }
 const stopTimerRequest = async () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
   try {
-    const response = await axios('http://localhost:8080/api/v1/timer/stop', {
-      method: 'POST',
+    const response = await axios.post(`${apiBaseUrl}/timer/stop`, {}, {
       headers: {
         'Content-Type': 'application/json'
       },

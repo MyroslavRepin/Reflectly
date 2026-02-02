@@ -20,8 +20,9 @@ const disabled = computed(() => {
 });
 
 const sendLoginRequest = async () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
   try {
-    const response = await axios.post('https://reflectly.myroslavrepin.com/api/v1/auth/login', {
+    const response = await axios.post(`${apiBaseUrl}/auth/login`, {
       login: formData.value.login,
       password: formData.value.password,
     }, {
