@@ -24,7 +24,12 @@ COPY frontend/package*.json ./frontend/
 RUN cd frontend && npm ci
 
 COPY frontend/ ./frontend/
-RUN cd frontend && npm run build
+
+# Clean any existing dist directory and build fresh
+RUN rm -rf ./frontend/dist && cd frontend && npm run build
+
+# Verify dist was created
+RUN test -d ./frontend/dist || (echo "ERROR: Frontend build failed, dist directory not created" && exit 1)
 
 # Copy server files
 COPY server/ ./server/

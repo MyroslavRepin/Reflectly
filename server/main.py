@@ -93,6 +93,16 @@ app.include_router(refresh_tokens_router)
 app.include_router(time_entries_router)
 app.include_router(api_auth_router)
 
+# Catch-all route for SPA - serve index.html for client-side routing
+@app.get("/{full_path:path}", response_class=FileResponse)
+async def serve_spa(full_path: str):
+    """Serve index.html for SPA routing, fallback for other paths"""
+    index_path = os.path.join(FRONTEND_DIR, "index.html")
+    if os.path.exists(index_path):
+        return FileResponse(index_path)
+    # If index.html doesn't exist, return 404
+    raise HTTPException(status_code=404, detail="Frontend not built")
+
 if "__main__" == __name__:
     import uvicorn
     uvicorn.run(app, host=settings.server_host, port=settings.server_port, reload=settings.server_reload)
