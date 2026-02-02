@@ -1,6 +1,7 @@
 import os
 
 from fastapi import APIRouter, Request, Depends, Form
+from pathlib import Path
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from fastapi.exceptions import HTTPException
@@ -16,11 +17,11 @@ from server.core.logging_config import logger
 router = APIRouter()
 
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-FRONTEND_DIR = os.path.abspath(os.path.join(
-    BASE_DIR, "..", "..", "..", "frontend"))
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+DIST_DIR = PROJECT_ROOT / "frontend" / "dist"
 
-templates = Jinja2Templates(directory=os.path.join(FRONTEND_DIR, "templates/routes"))
+templates = Jinja2Templates(directory=str(DIST_DIR))
+
 
 jwt_service = JWTService()
 
@@ -29,18 +30,7 @@ async def dashboard(
     request: Request,
     user_id: str = Depends(get_current_user),
 ):
-    return templates.TemplateResponse("dashboard.html", {"request": request, "user_id": user_id})
-    # try:
-    #     access_token = await auth.get_access_token_from_request(request)
-    #
-    #     payload = auth.verify_token(access_token, verify_csrf=False)
-    #     payload_dict = dict(payload)
-    #     logger.debug(payload_dict)
-    #
-    #     # if payload.type != "access":
-    #     #     raise Exception("Not an access token")
-    #
-    #     return {"valid": True, "user_id": payload.sub, "payload": payload}
-    #
-    # except Exception as e:
-    #     return {"valid": False, "error": str(e)}
+    return templates.TemplateResponse(
+        "index.html",
+        {"request": request}
+    )
