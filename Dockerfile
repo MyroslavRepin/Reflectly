@@ -15,6 +15,9 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
+# Copy .env file first so environment variables are available during build
+COPY .env ./
+
 # Copy dependencies and install via uv's lockfile (use python -m uv to avoid missing script entrypoint)
 COPY pyproject.toml uv.lock ./
 RUN uv sync

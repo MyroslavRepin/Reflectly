@@ -2,7 +2,7 @@
 
 Track your coding sessions, reflect on productivity, and build better habits.
 
-**Version:** 0.3.0 (In Development)  
+**Version:** 0.4.0  
 **Repository:** https://github.com/MyroslavRepin/Reflectly.git
 
 > This project is actively under development. Some features may be incomplete or subject to change.
