@@ -1,0 +1,9 @@
+tunnel: reflectly-tunnel
+credentials-file: /etc/cloudflared/<tunnel-uid>.json
+origincert: /etc/cloudflared/cert.pem
+
+ingress:
+  - hostname: reflectly.myroslavrepin.com
+    service: http://reflectly-server:8080
+
+  - service: http_status:404
