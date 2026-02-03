@@ -94,7 +94,7 @@ const startTracking = () => {
                 <div class="session-value">{{ sessionTime }}</div>
               </div>
               <div class="session-name">{{ projectName }}</div>
-              <a href="/login" class="cta-button" @click="startTracking">Start Tracking</a>
+              <a href="/login" class="cta-button">Start Tracking</a>
               <div class="rating">
                 <div v-for="star in 5" :key="star" class="star"></div>
               </div>
