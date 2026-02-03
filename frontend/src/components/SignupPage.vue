@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import axios from 'axios';
+import { API_BASE_URL } from '@/config/api';
 
 const formData = ref({
   email: '',
@@ -12,7 +13,6 @@ const tagline = ref("Ready to track your coding progress?")
 const isError = ref(false);
 
 const disabled = computed(() => {
-  // Todo: Improve validtion (min 8 chars for password, valid email format, etc)
   if (formData.value.email && formData.value.username && formData.value.password) {
     return false;
   } else {
@@ -22,9 +22,8 @@ const disabled = computed(() => {
 });
 let year = ref( new Date().getFullYear() );
 const sendSignupRequest = async () => {
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
   try {
-    const response = await axios.post(`${apiBaseUrl}/auth/signup`, {
+    const response = await axios.post(`${API_BASE_URL}/auth/signup`, {
       email: formData.value.email,
       username: formData.value.username,
       password: formData.value.password,
@@ -44,11 +43,11 @@ const sendSignupRequest = async () => {
       isError.value = true;
     }
     if (error.response.status === 409) {
-      tagline.value = 'User with this email/username already exists. (${error.response.status})';
+      tagline.value = 'User with this email/username already exists.';
       isError.value = true;
     }
     else {
-      tagline.value = `Server error occurred. Please try again later. (${error.response.status})`;
+      tagline.value = `Server error occurred. Please try again later.`;
       isError.value = true;
     }
   }

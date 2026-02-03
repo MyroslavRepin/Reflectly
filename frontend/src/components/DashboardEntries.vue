@@ -1,31 +1,28 @@
 <script setup>
 import {computed, onMounted, ref} from 'vue'
 import axios from "axios";
+import { API_BASE_URL } from '@/config/api'
 import EntryModal from './EntryModal.vue'
 
 const entries = ref([])
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
-const serverUrl = `${apiBaseUrl}/timer/`
 const now = ref(new Date())
 const selectedEntry = ref(null)
 const isModalOpen = ref(false)
 
 async function fetchAllEntries() {
   try {
-      const response = await axios(serverUrl, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        withCredentials: true,
-      })
+    const response = await axios.get(`${API_BASE_URL}/timer/`, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      withCredentials: true,
+    })
     entries.value = response.data
-    console.log(response)
     return entries
-    }
-    catch (error) {
-      console.error("Error stopping timer:", error);
-    }
+  }
+  catch (error) {
+    console.error("Error fetching entries:", error);
+  }
 }
 function calculateElapsedTime(startedAt, endedAt) {
   if (!endedAt) {

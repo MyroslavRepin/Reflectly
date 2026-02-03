@@ -1,114 +1,201 @@
-# Reflectly - Time Reflection and Journaling
+# Reflectly - Code Time Tracker
 
-**Version:** 0.3.0 (Work in Progress)
+Track your coding sessions, reflect on productivity, and build better habits.
 
-> **Note:** This version is currently under active development and not yet finished. Some features may be incomplete or subject to change.
+**Version:** 0.3.0 (In Development)  
+**Repository:** https://github.com/MyroslavRepin/Reflectly.git
 
-## Description
-A time reflection and journaling web application designed to help you track work sessions, plan tasks, keep a productivity journal, and analyze progress through charts and statistics.
+> This project is actively under development. Some features may be incomplete or subject to change.
+
+---
+
+## Table of Contents
+
+- [Quick Start](#quick-start)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Running the Application](#running-the-application)
+- [Configuration](#configuration)
+- [Project Structure](#project-structure)
+- [API Documentation](#api-documentation)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [License](#license)
+
+---
+
+## Quick Start
+
+Get up and running in 5 minutes!
+
+### Option 1: Docker (Recommended)
+
+```bash
+# Clone the repository
+git clone https://github.com/MyroslavRepin/Reflectly.git
+cd Reflectly
+
+# Start the application
+docker-compose up -d
+
+# Access the app
+# Frontend: http://localhost:5173
+# API Docs: http://localhost:8000/docs
+```
+
+### Option 2: Manual Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/MyroslavRepin/Reflectly.git
+cd Reflectly
+
+# Backend setup (in main directory)
+uv sync
+cp .env.example .env
+alembic upgrade head
+uvicorn server.main:app --reload
+
+# Frontend setup (in new terminal)
+cd frontend
+npm install
+npm run dev
+
+# Access the app
+# Frontend: http://localhost:5173
+# API Docs: http://localhost:8000/docs
+```
+
+---
 
 ## Features
 
-### Implemented (v0.3.0 - In Progress)
-- **Modern Vue 3 Frontend** (NEW)
-  - Single Page Application (SPA) architecture with Vue 3 and Vite
-  - Vue Router for seamless navigation
-  - Component-based UI architecture
-  - Responsive landing page
-  - Authentication pages (Login/Signup)
-  - Dashboard layout with side navigation
-  - User greeting component
-  - Timer section component
-  
-- **JSON API for Authentication** (NEW)
-  - RESTful API endpoints for signup, login, and logout
-  - Separated from server-side rendering for better API/frontend separation
-  
-- **Time Tracking**
-  - Start/stop timer functionality
-  - Time entries database model
-  - API endpoints for timer control (`/api/v1/timer/start`, `/api/v1/timer/stop`, `/api/v1/timer/current`)
-  - Track coding sessions with timestamps
-  - User-specific time entry tracking
-  
-- **User Authentication**
-  - Secure signup and login system
-  - JWT-based authentication with access and refresh tokens
-  - Password hashing with Argon2
-  - HttpOnly cookies for secure token storage
-  - Automatic token refresh middleware
-  - Token refresh endpoint (`/auth/refresh`)
-  
-- **Dashboard**
-  - Modern dashboard UI (legacy templates in `frontend_backup/`)
-  - Session time tracking interface
-  - Project overview sections
-  - Responsive design for mobile and desktop
-  
-- **User Management**
-  - User registration with email and username
-  - Password validation
+### Currently Available
+
+- **Time Tracking** ⏱️
+  - Start/stop timer for coding sessions
+  - Real-time elapsed time display
+  - Session history and statistics
+
+- **Authentication** 🔐
+  - User registration and login
+  - Secure JWT-based sessions
+  - Persistent login with refresh tokens
+
+- **Dashboard** 📊
+  - Overview of current and past sessions
+  - Session details and duration
   - User profile management
-  - Database-backed user storage
 
-- **Infrastructure**
-  - PostgreSQL database with async support (asyncpg)
-  - Alembic migrations for database schema management
-  - Docker containerization support
-  - Comprehensive logging with Loguru
-  - Environment-based configuration
-  - Time entries table with foreign key relationships
+- **Modern UI** 🎨
+  - Responsive Vue 3 single-page application
+  - Works on desktop and mobile
+  - Dark-themed design
 
-### Planned
+### Coming Soon
+
 - Productivity journal
-- Charts and statistics for time and tasks
+- Advanced statistics and charts
+- Session categorization and tagging
+- AI-powered insights
 - Task planning and prioritization
-- Project management and categorization
-- Optional AI journal analysis
+- Export statistics
+
+---
 
 ## Tech Stack
-- **Backend:** FastAPI + PostgreSQL + SQLAlchemy (async)
-- **Frontend:** Vue 3 + Vite + Vue Router (migrating from Jinja2 templates)
-- **Authentication:** JWT tokens with AuthX
-- **Database:** PostgreSQL with asyncpg driver
-- **Migrations:** Alembic
-- **Logging:** Loguru
-- **Password Hashing:** Argon2
-- **Containerization:** Docker + Docker Compose
-- **Charts / Visualization:** Chart.js / Plotly (planned)
-- **Optional AI Module:** OpenAI API (planned)
+
+### Frontend
+- **Vue 3** - Progressive JavaScript framework
+- **Vite** - Next-generation build tool
+- **Vue Router** - Client-side routing
+- **Axios** - HTTP client
+
+### Backend
+- **FastAPI** - Modern Python web framework
+- **PostgreSQL** - Relational database
+- **SQLAlchemy** - Python ORM (async)
+- **Alembic** - Database migrations
+- **AuthX** - Authentication & authorization
+
+### DevOps
+- **Docker** - Containerization
+- **Docker Compose** - Multi-container orchestration
+- **Nginx** - Web server (production)
+
+### Other
+- **Loguru** - Logging
+- **Argon2** - Password hashing
+- **JWT** - Secure tokens
+
+---
 
 ## Prerequisites
-- Python >= 3.14
-- Node.js >= 18.0.0 (for Vue 3 frontend)
-- PostgreSQL
-- Docker (optional)
+
+### Minimum Requirements
+
+- **Python** >= 3.11
+- **Node.js** >= 18.0.0
+- **PostgreSQL** >= 12
+
+### Using Docker (No local setup needed)
+
+- **Docker** >= 20.10
+- **Docker Compose** >= 2.0
+
+---
 
 ## Installation
 
-### Development Setup
+### Step 1: Clone the Repository
 
-#### Backend Setup
 ```bash
-# Clone repository
-git clone <repo-url>
+git clone https://github.com/MyroslavRepin/Reflectly.git
 cd Reflectly
+```
 
-# Install Python dependencies using uv
+### Step 2: Backend Setup
+
+#### Option A: Using `uv` (Recommended)
+
+```bash
+# Install Python dependencies
 uv sync
 
-# Set up environment variables
+# Copy environment file
 cp .env.example .env
-# Edit .env with your database credentials and secrets
+
+# Edit .env with your configuration (database credentials, JWT secret, etc.)
+# nano .env  # or use your preferred editor
 
 # Run database migrations
 alembic upgrade head
-
-# Start development server
-uvicorn server.main:app --reload
 ```
 
-#### Frontend Setup
+#### Option B: Using `pip` and `venv`
+
+```bash
+# Create virtual environment
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Copy environment file
+cp .env.example .env
+
+# Edit .env with your configuration
+nano .env
+
+# Run database migrations
+alembic upgrade head
+```
+
+### Step 3: Frontend Setup
+
 ```bash
 # Navigate to frontend directory
 cd frontend
@@ -116,104 +203,269 @@ cd frontend
 # Install Node.js dependencies
 npm install
 
-# Start Vue development server
+# Return to project root (optional, for running from main dir)
+cd ..
+```
+
+### Step 4: Database Setup
+
+```bash
+# Ensure PostgreSQL is running, then create database and run migrations
+alembic upgrade head
+```
+
+---
+
+## Running the Application
+
+### Option 1: Local Development (Two Terminal Windows)
+
+**Terminal 1 - Backend:**
+```bash
+# From project root
+uvicorn server.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+**Terminal 2 - Frontend:**
+```bash
+# From project root
+cd frontend
 npm run dev
 ```
 
-The backend will run on `http://localhost:8000` and the frontend on `http://localhost:5173`
+**Access the application:**
+- Frontend: http://localhost:5173
+- API Swagger Docs: http://localhost:8000/docs
+- API ReDoc: http://localhost:8000/redoc
 
-### Docker Setup
+### Option 2: Docker Compose (Single Command)
+
 ```bash
-# Build and run with Docker Compose
+# From project root
 docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop the application
+docker-compose down
 ```
+
+**Access the application:**
+- Frontend: http://localhost:5173
+- API Swagger Docs: http://localhost:8000/docs
+
+---
+
+## Configuration
+
+### Environment Variables
+
+Key variables in `.env` file (see `.env.example` for all options):
+
+```dotenv
+# Database
+DB_USER=postgres
+DB_PASSWORD=your_secure_password
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=reflectly
+DB_URL_FULL=postgresql+asyncpg://user:password@host:port/database
+
+# JWT Authentication
+JWT_SECRET_KEY=your_secret_key_here
+JWT_ACCESS_TOKEN_EXPIRES_SECONDS=30
+JWT_ALGORITHM=HS256
+
+# Server
+SERVER_HOST=0.0.0.0
+SERVER_PORT=8000
+SERVER_DEBUG=True
+
+# Frontend Environment
+VITE_FRONTEND_ENV=dev  # 'dev' or 'prod'
+```
+
+### API URL Configuration
+
+The frontend automatically switches between dev and prod API URLs based on `VITE_FRONTEND_ENV`:
+
+- **Development:** `http://localhost:8080/api/v1`
+- **Production:** `https://reflectly.myroslavrepin.com/api/v1`
+
+See [API_CONFIGURATION.md](API_CONFIGURATION.md) for detailed setup.
+
+---
+
+## Project Structure
+
+```
+Reflectly/
+├── frontend/                          # Vue 3 Frontend Application
+│   ├── src/
+│   │   ├── config/
+│   │   │   └── api.js                # Environment-based API configuration
+│   │   ├── components/               # Vue components
+│   │   │   ├── DashboardLayout.vue   # Main dashboard layout
+│   │   │   ├── DashboardEntries.vue  # Session history
+│   │   │   ├── DashboardTimerSection.vue  # Timer interface
+│   │   │   ├── LoginPage.vue         # Authentication
+│   │   │   └── SignupPage.vue        # Registration
+│   │   ├── assets/                   # Styles and static files
+│   │   ├── App.vue                   # Root component
+│   │   └── main.js                   # Entry point
+│   ├── index.html
+│   ├── vite.config.js                # Build configuration
+│   └── package.json                  # NPM dependencies
+│
+├── server/                            # FastAPI Backend
+│   ├── main.py                        # Application entry point
+│   ├── app/
+│   │   ├── api/                      # API endpoints
+│   │   │   ├── auth.py               # Authentication routes
+│   │   │   ├── dashboard.py          # Dashboard routes
+│   │   │   └── v1/                   # API v1
+│   │   └── middleware/               # Custom middleware
+│   ├── core/                         # Configuration
+│   │   ├── config.py                 # App settings
+│   │   ├── jwt_config.py             # JWT setup
+│   │   └── logging_config.py         # Logging setup
+│   ├── db/                           # Database
+│   │   ├── models/                   # SQLAlchemy models
+│   │   ├── repositories/             # Data access layer
+│   │   └── database.py               # Connection setup
+│   ├── deps/                         # Dependencies & schemas
+│   └── utils/                        # Helper functions
+│
+├── alembic/                          # Database Migrations
+│   └── versions/                     # Migration scripts
+│
+├── deploy/                           # Deployment scripts
+│   ├── nginx/                        # Nginx configuration
+│   └── README.md                     # Deployment guide
+│
+├── docker-compose.yml                # Docker setup
+├── Dockerfile                        # Container definition
+├── pyproject.toml                    # Python dependencies
+├── uv.lock                           # Dependency lock file
+├── .env.example                      # Environment template
+├── alembic.ini                       # Migration config
+└── README.md                         # This file
+```
+
+---
+
+## API Documentation
+
+### Interactive Docs
+
+Once the backend is running, access interactive API documentation:
+
+- **Swagger UI:** http://localhost:8000/docs
+- **ReDoc:** http://localhost:8000/redoc
+
+### Main Endpoints
+
+**Authentication:**
+- `POST /api/v1/auth/signup` - Register new user
+- `POST /api/v1/auth/login` - User login
+- `POST /api/v1/auth/refresh` - Refresh access token
+
+**Timer:**
+- `GET /api/v1/timer/` - Get all sessions
+- `GET /api/v1/timer/current` - Get active session
+- `POST /api/v1/timer/start` - Start new session
+- `POST /api/v1/timer/stop` - Stop current session
+
+---
 
 ## Deployment
 
-For production deployment on VPS with Nginx and SSL:
-
-**Quick deployment guide (Russian):** [deploy/README.ru.md](deploy/README.ru.md)  
-**Detailed deployment guide (English):** [deploy/README.md](deploy/README.md)
+### Local Production Build
 
 ```bash
-# One-time setup: Get SSL certificate
+# Build frontend
+cd frontend
+npm run build
+# Output: frontend/dist/
+
+# Run backend with production settings
+VITE_FRONTEND_ENV=prod uvicorn server.main:app --host 0.0.0.0 --port 8000
+```
+
+### VPS Deployment (with Nginx & SSL)
+
+See detailed guides:
+- **English:** [deploy/README.md](deploy/README.md)
+- **Russian:** [deploy/README.ru.md](deploy/README.ru.md)
+
+Quick deployment:
+```bash
+# One-time: Setup SSL certificates
 ./deploy/deploy.sh init
 
-# Deploy/update application
+# Deploy or update
 ./deploy/deploy.sh deploy
 ```
 
-## Configuration
-Key environment variables (see `.env.example`):
-- `DATABASE_URL` - PostgreSQL connection string
-- `JWT_SECRET_KEY` - Secret key for JWT token generation
-- `JWT_ACCESS_TOKEN_EXPIRE_MINUTES` - Access token expiration time
-- `JWT_REFRESH_TOKEN_EXPIRE_DAYS` - Refresh token expiration time
-- `SERVER_HOST` - Server host address
-- `SERVER_PORT` - Server port
-
-## Project Structure
-```
-Reflectly/
-├── server/
-│   ├── main.py                 # FastAPI application entry point
-│   ├── app/
-│   │   ├── api/               # API route handlers (v1)
-│   │   └── middleware/        # Custom middleware
-│   ├── core/                  # Core configuration and services
-│   │   ├── config.py          # Application configuration
-│   │   ├── jwt_config.py      # JWT configuration
-│   │   └── logging_config.py  # Logging setup
-│   ├── db/                    # Database models and repositories
-│   │   ├── database.py        # Database connection
-│   │   ├── models/            # SQLAlchemy models
-│   │   └── repositories/      # Data access layer
-│   ├── deps/                  # Dependencies and schemas
-│   └── utils/                 # Utility functions
-├── frontend/                  # Vue 3 SPA
-│   ├── src/
-│   │   ├── App.vue            # Root component
-│   │   ├── main.js            # Vue application entry
-│   │   ├── components/        # Vue components
-│   │   │   ├── DashboardLayout.vue
-│   │   │   ├── DashboardSideMenu.vue
-│   │   │   ├── DashboardUserGreeting.vue
-│   │   │   ├── LandingPage.vue
-│   │   │   ├── LoginPage.vue
-│   │   │   ├── SignupPage.vue
-│   │   │   └── TimerSection.vue
-│   │   └── assets/            # Static assets
-│   ├── index.html
-│   ├── vite.config.js         # Vite configuration
-│   └── package.json
-├── frontend_backup/           # Legacy server-side templates
-│   ├── templates/             # Jinja2 templates (deprecated)
-│   └── static/                # Legacy CSS/JS
-├── alembic/                   # Database migrations
-│   └── versions/
-├── logs/                      # Application logs
-├── pyproject.toml            # Python dependencies
-├── docker-compose.yml        # Docker configuration
-└── README.md
-```
-
-## API Documentation
-Once the server is running, access the interactive API documentation at:
-- Swagger UI: `http://localhost:8000/docs`
-- ReDoc: `http://localhost:8000/redoc`
-
-## Testing
-```bash
-# Run tests (when implemented)
-pytest
-```
+---
 
 ## Contributing
-Contributions are welcome! Please ensure:
-- Code follows PEP 8 standards
-- Type hints are used throughout
-- Proper logging (no print statements)
-- Tests are included for new features
+
+We welcome contributions! Here's how to help:
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit changes: `git commit -m 'Add amazing feature'`
+4. Push to branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
+
+### Code Standards
+
+- Follow [PEP 8](https://www.python.org/dev/peps/pep-0008/) for Python
+- Use type hints throughout
+- Write meaningful comments explaining "why", not "what"
+- No print statements - use logging instead
+- Include tests for new features
+
+---
+
+## Troubleshooting
+
+### Issue: "Cannot connect to database"
+- Ensure PostgreSQL is running
+- Check database credentials in `.env`
+- Verify connection string format
+
+### Issue: "Port 8000 already in use"
+- Change port: `uvicorn server.main:app --port 8001`
+- Or kill existing process: `lsof -ti:8000 | xargs kill -9`
+
+### Issue: "Frontend can't reach backend API"
+- Check `VITE_FRONTEND_ENV` in `.env`
+- Verify backend is running on correct port
+- Check browser console for CORS errors
+
+### Issue: "npm install fails"
+- Clear cache: `npm cache clean --force`
+- Delete `node_modules`: `rm -rf node_modules`
+- Try again: `npm install`
+
+Need more help? Check [API_CONFIGURATION.md](API_CONFIGURATION.md) for frontend API setup.
+
+---
 
 ## License
-MIT
+
+MIT License - see LICENSE file for details
+
+---
+
+## Support
+
+- Create an issue on [GitHub](https://github.com/MyroslavRepin/Reflectly/issues)
+- Check existing documentation in `deploy/` and `docs/` folders
+
+---
+
+**Happy tracking! Track your time, reflect on progress, build better habits.**

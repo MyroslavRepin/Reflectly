@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router'
+import { API_BASE_URL } from '@/config/api';
 
 const router = useRouter()
 
@@ -20,9 +21,8 @@ const disabled = computed(() => {
 });
 
 const sendLoginRequest = async () => {
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
   try {
-    const response = await axios.post(`${apiBaseUrl}/auth/login`, {
+    const response = await axios.post(`${API_BASE_URL}/auth/login`, {
       login: formData.value.login,
       password: formData.value.password,
     }, {
@@ -31,16 +31,13 @@ const sendLoginRequest = async () => {
       },
       withCredentials: true,
     });
-    // Note: axios throws an error for non-2xx status codes, handle errors in catch block
     router.push('/dashboard')
-    console.log(response);
   } catch (error) {
     if (!error.response) {
       tagline.value = "Network error. Please check your connection.";
       return;
     }
     if (error.response.status === 401) {
-      // Todo: Change color of tagline to red on error
       isError.value = true;
       tagline.value = "Invalid credentials. Please try again.";
     }

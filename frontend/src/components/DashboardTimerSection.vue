@@ -1,6 +1,7 @@
 <script setup>
 import {ref, onMounted, computed, onUnmounted, watch} from "vue";
 import axios from "axios";
+import { API_BASE_URL } from "@/config/api";
 
 let isError = ref(false)
 let errorMessage = ref("")
@@ -33,10 +34,9 @@ const minutes = computed(() => Math.floor(elapsedSeconds.value / 60) % 60)
 const seconds = computed(() => elapsedSeconds.value % 60)
 
 async function initTimerFromApi() {
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
   try {
     const response = await axios.get(
-      `${apiBaseUrl}/timer/current`,
+      `${API_BASE_URL}/timer/current`,
       { withCredentials: true }
     )
 
@@ -62,15 +62,13 @@ async function initTimerFromApi() {
 }
 
 const startTimerRequest = async () => {
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
   try {
-    const response = await axios.post(`${apiBaseUrl}/timer/start`, {}, {
+    const response = await axios.post(`${API_BASE_URL}/timer/start`, {}, {
       headers: {
         'Content-Type': 'application/json'
       },
       withCredentials: true,
     })
-    console.log("Timer started:", response.data);
     isTimerRunning.value = true;
   }
   catch (error) {
@@ -80,9 +78,8 @@ const startTimerRequest = async () => {
   }
 }
 const stopTimerRequest = async () => {
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
   try {
-    const response = await axios.post(`${apiBaseUrl}/timer/stop`, {}, {
+    const response = await axios.post(`${API_BASE_URL}/timer/stop`, {}, {
       headers: {
         'Content-Type': 'application/json'
       },
