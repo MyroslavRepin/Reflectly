@@ -11,7 +11,7 @@ const isModalOpen = ref(false)
 
 async function fetchAllEntries() {
   try {
-    const response = await axios.get(`${API_BASE_URL}/timer/`, {
+    const response = await axios.get(`${API_BASE_URL}/time-entries`, {
       headers: {
         'Content-Type': 'application/json'
       },

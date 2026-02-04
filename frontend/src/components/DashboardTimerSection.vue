@@ -36,7 +36,7 @@ const seconds = computed(() => elapsedSeconds.value % 60)
 async function initTimerFromApi() {
   try {
     const response = await axios.get(
-      `${API_BASE_URL}/v1/time-entries/current-running`,
+      `${API_BASE_URL}/time-entries/current-running`,
       { withCredentials: true }
     )
 
@@ -54,7 +54,6 @@ async function initTimerFromApi() {
 
     elapsedSeconds.value = now - startedAt
     isTimerRunning.value = true
-    startTick()
 
   } catch (e) {
     console.error('Timer init failed', e)
@@ -65,13 +64,17 @@ async function initTimerFromApi() {
 
 const startTimerRequest = async () => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/v1/time-entries/start`, {}, {
+    const response = await axios.post(`${API_BASE_URL}/time-entries/start`, {
+      title: formData.value.title,
+      description: formData.value.description,
+    }, {
       headers: {
         'Content-Type': 'application/json'
       },
       withCredentials: true,
     })
-    isTimerRunning.value = true;
+    elapsedSeconds.value = 0
+    isTimerRunning.value = true
   }
   catch (error) {
     isError.value = true
@@ -81,7 +84,7 @@ const startTimerRequest = async () => {
 }
 const stopTimerRequest = async () => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/time-entries/stop`, {}, {
+    const response = await axios.patch(`${API_BASE_URL}/time-entries/stop`, {}, {
       headers: {
         'Content-Type': 'application/json'
       },
@@ -94,6 +97,8 @@ const stopTimerRequest = async () => {
     isError.value = true
     errorMessage.value = error.message
     console.error("Error stopping timer:", error);
+    isTimerRunning.value = false
+    elapsedSeconds.value = 0
   }
 }
 const pauseTimerRequest = async () => {
@@ -123,11 +128,11 @@ const timerDisplay = computed(() => {
           {{ isTimerRunning ? 'Active' : 'Idle' }}
         </div>
         <div class="session-time">
-          <span class="time-digit">{{ String(hours).padStart(2, '0') }}</span>
+          <span class="time-digit">{{ hours.toString().padStart(2, '0') }}</span>
           <span class="time-separator">:</span>
-          <span class="time-digit">{{ String(minutes).padStart(2, '0') }}</span>
+          <span class="time-digit">{{ minutes.toString().padStart(2, '0') }}</span>
           <span class="time-separator">:</span>
-          <span class="time-digit">{{ String(seconds).padStart(2, '0') }}</span>
+          <span class="time-digit">{{ seconds.toString().padStart(2, '0') }}</span>
         </div>
         <div class="session-label">{{ isTimerRunning ? 'Time Tracked' : 'Ready to Start' }}</div>
       </div>
@@ -154,7 +159,6 @@ const timerDisplay = computed(() => {
         </button>
       </div>
     </div>
-    
     <div class="bottom-section" v-if="!isTimerRunning">
       <form class="timer-form">
         <div class="form-field">

@@ -15,7 +15,7 @@ from server.core.jwt_service import JWTService
 from server.db.repositories.entries import TimeEntriesRepository
 from server.db.sessions import get_db
 from server.deps.auth_deps import get_current_user
-from server.deps.schemas.entries_schemas import EntryCreate
+from server.deps.schemas.entries_schemas import EntryCreate, EntryStartRequest
 from server.core.logging_config import logger
 from sqlalchemy import select
 router = APIRouter()
@@ -31,12 +31,12 @@ entries_repo = TimeEntriesRepository()
 
 @router.post("/api/v1/time-entries/start")
 async def start_timer(
+    request: EntryStartRequest,
     jwt_decoded: str = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
     user_id = jwt_decoded["user_id"]
-
-    new_entry = EntryCreate(user_id=user_id)
+    
     try:
         stmt = select(entries_repo.model).where(
             entries_repo.model.user_id == int(user_id),
@@ -49,6 +49,12 @@ async def start_timer(
             logger.warning(f"User {user_id} already has running entry")
             raise HTTPException(status_code=409, detail="Timer is already running")
 
+        new_entry = EntryCreate(
+            user_id=int(user_id),
+            title=request.title,
+            description=request.description
+        )
+        
         created_entry = await entries_repo.create(db, new_entry=new_entry)
         return {
             "id": created_entry.id,
@@ -57,14 +63,13 @@ async def start_timer(
         }
 
     except HTTPException:
-        # Пробрасываем HTTPException как есть, не логируем как 500
         raise
 
     except Exception as e:
         logger.error(f"Error creating entry for user {user_id}: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
-@router.post("/api/v1/time-entries/stop")
+@router.patch("/api/v1/time-entries/stop")
 async def stop_timer(
         jwt_decoded: str = Depends(get_current_user),
         db: AsyncSession = Depends(get_db),

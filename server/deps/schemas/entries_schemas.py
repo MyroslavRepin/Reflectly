@@ -1,5 +1,12 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
-# Currently I don't need schemas :)
 class EntryCreate(BaseModel):
     user_id: int
+    title: Optional[str] = None
+    description: Optional[str] = None
+
+class EntryStartRequest(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None

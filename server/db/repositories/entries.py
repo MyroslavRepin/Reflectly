@@ -8,7 +8,9 @@ class TimeEntriesRepository:
 
     async def create(self, db, new_entry):
         entry = self.model(
-            user_id=new_entry.user_id
+            user_id=new_entry.user_id,
+            title=new_entry.title,
+            description=new_entry.description
         )
         db.add(entry)
         try:
