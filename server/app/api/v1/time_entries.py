@@ -29,7 +29,7 @@ templates = Jinja2Templates(directory=os.path.join(FRONTEND_DIR, "templates/rout
 
 entries_repo = TimeEntriesRepository()
 
-@router.post("/api/v1/timer/start")
+@router.post("/api/v1/time-entries/start")
 async def start_timer(
     jwt_decoded: str = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
@@ -64,7 +64,7 @@ async def start_timer(
         logger.error(f"Error creating entry for user {user_id}: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
-@router.post("/api/v1/timer/stop")
+@router.post("/api/v1/time-entries/stop")
 async def stop_timer(
         jwt_decoded: str = Depends(get_current_user),
         db: AsyncSession = Depends(get_db),
@@ -93,7 +93,7 @@ async def stop_timer(
         logger.error(f"Error stopping timer for user {user_id}: {e}")
         raise HTTPException(status_code=500, detail="Error stopping timer")
 
-@router.get("/api/v1/timer/current")
+@router.get("/api/v1/time-entries/current-running")
 async def get_current_timer(
         jwt_decoded: str = Depends(get_current_user),
         db: AsyncSession = Depends(get_db)
@@ -114,11 +114,11 @@ async def get_current_timer(
     }
     return data
 
-@router.post("/api/v1/timer/pause")
+@router.post("/api/v1/time-entries/pause")
 async def pause_timer(jwt_decoded: str = Depends(get_current_user)):
     return "pause"
 
-@router.get('/api/v1/timer/')
+@router.get('/api/v1/time-entries')
 async def get_all_sessions(jwt_decoded: str = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
     user_id = jwt_decoded["user_id"]
     try:
@@ -131,7 +131,7 @@ async def get_all_sessions(jwt_decoded: str = Depends(get_current_user), db: Asy
         logger.error(f"Error getting entries for user {user_id}: {e}")
         raise HTTPException(status_code=500, detail="Error getting entries")
 
-@router.get('/api/v1/timer/{entry_id}')
+@router.get('/api/v1/time-entries/{entry_id}')
 async def get_timer_by_id(entry_id: int, jwt_decoded: str = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
     user_id = jwt_decoded["user_id"]
     try:

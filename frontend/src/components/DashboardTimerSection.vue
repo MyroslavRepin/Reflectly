@@ -36,7 +36,7 @@ const seconds = computed(() => elapsedSeconds.value % 60)
 async function initTimerFromApi() {
   try {
     const response = await axios.get(
-      `${API_BASE_URL}/timer/current`,
+      `${API_BASE_URL}/v1/time-entries/current-running`,
       { withCredentials: true }
     )
 
@@ -65,7 +65,7 @@ async function initTimerFromApi() {
 
 const startTimerRequest = async () => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/timer/start`, {}, {
+    const response = await axios.post(`${API_BASE_URL}/v1/time-entries/start`, {}, {
       headers: {
         'Content-Type': 'application/json'
       },
@@ -81,7 +81,7 @@ const startTimerRequest = async () => {
 }
 const stopTimerRequest = async () => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/timer/stop`, {}, {
+    const response = await axios.post(`${API_BASE_URL}/time-entries/stop`, {}, {
       headers: {
         'Content-Type': 'application/json'
       },
