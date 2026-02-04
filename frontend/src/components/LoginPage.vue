@@ -21,6 +21,8 @@ const disabled = computed(() => {
 });
 
 const sendLoginRequest = async () => {
+  isError.value = false;
+  
   try {
     const response = await axios.post(`${API_BASE_URL}/auth/login`, {
       login: formData.value.login,
@@ -31,22 +33,27 @@ const sendLoginRequest = async () => {
       },
       withCredentials: true,
     });
-    router.push('/dashboard')
+    
+    if (response.data?.ok) {
+      return router.push('/dashboard');
+    }
   } catch (error) {
+    isError.value = true;
+    
     if (!error.response) {
       tagline.value = "Network error. Please check your connection.";
       return;
     }
-    if (error.response.status === 401) {
-      isError.value = true;
-      tagline.value = "Invalid credentials. Please try again.";
-    }
-    if (error.response.status === 409) {
-      tagline.value = "User with this email/username already exists"
-      isError.value = true;
-    }
-    else {
-      tagline.value = `Server error occurred. Please try again later`;
+    
+    const status = error.response.status;
+    const detail = error.response.data?.detail;
+    
+    if (status === 401 || status === 404) {
+      tagline.value = detail || "Invalid credentials. Please try again.";
+    } else if (status === 500) {
+      tagline.value = "Server error. Please try again later.";
+    } else {
+      tagline.value = detail || "An error occurred. Please try again.";
     }
   }
 };

@@ -27,7 +27,7 @@ async def signup_api(
     user_data: SignupRequest,
     db: AsyncSession = Depends(get_db)
 ):
-    repo = UserRepository() # Repository to easily interact with the User model (db)
+    repo = UserRepository()
 
     try:
         user = UserCreate(
@@ -38,6 +38,16 @@ async def signup_api(
 
         created_user = await repo.create(db, **user.dict())
         logger.debug(f"User {user_data.username} created")
+        
+        access_token = jwt_service.create_access_token(user_id=created_user.id)
+        refresh_token = jwt_service.create_refresh_token(user_id=created_user.id)
+
+        jwt_service.set_cokies(
+            access_token=access_token,
+            refresh_token=refresh_token,
+            response=response
+        )
+        
         data = {
           "ok": True,
           "user": {
@@ -46,26 +56,16 @@ async def signup_api(
             "email": created_user.email
           }
         }
+        
+        return data
+        
     except IntegrityError:
+        await db.rollback()
         raise HTTPException(status_code=409, detail="User already exists")
-
-    access_token = jwt_service.create_access_token(user_id=created_user.id)
-    refresh_token = jwt_service.create_refresh_token(user_id=created_user.id)
-
-    try:
-        jwt_service.set_cokies(
-            access_token=access_token,
-            refresh_token=refresh_token,
-            response=response
-        )
     except Exception as e:
-        logger.error(f"Error setting cookies: {e}")
-        raise HTTPException(
-            status_code=500,
-            detail="COOKIE_SET_FAILED"
-        )
-
-    return data # Returning the created user
+        await db.rollback()
+        logger.error(f"Signup failed: {e}")
+        raise HTTPException(status_code=500, detail="Registration failed")
 
 
 @router.post("/api/v1/auth/login")
@@ -89,7 +89,7 @@ async def login_api(
     if not user:
         logger.warning(f"User not found: {user_credentials.login}")
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
+            status_code=status.HTTP_404_NOT_FOUND,
             detail="No user found with this username or email"
         )
 
@@ -115,12 +115,18 @@ async def login_api(
     access_token = auth.create_access_token(uid=str(user.id))
     refresh_token = auth.create_refresh_token(uid=str(user.id))
 
-    jwt_service.set_cokies(
-        access_token=access_token,
-        refresh_token=refresh_token,
-        response=response,
-    )
-
+    try:
+        jwt_service.set_cokies(
+            access_token=access_token,
+            refresh_token=refresh_token,
+            response=response,
+        )
+    except Exception as e:
+        logger.error(f"Error setting cookies: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail="COOKIE_SET_FAILED"
+        )
     data = {
         "ok": True,
         "user": {
@@ -135,18 +141,25 @@ async def login_api(
 # Logout API
 @router.post("/api/v1/auth/logout")
 async def logout_api(response: Response):
-    response.delete_cookie(
-        key=settings.jwt_access_cookie_name,
-        path="/",
-        samesite="lax",
-        secure=False,
-    )
-    response.delete_cookie(
-        key=settings.jwt_refresh_cookie_name,
-        path="/",
-        samesite="lax",
-        secure=False,
-    )
+    try:
+        response.delete_cookie(
+            key=settings.jwt_access_cookie_name,
+            path="/",
+            samesite="lax",
+            secure=False,
+        )
+        response.delete_cookie(
+            key=settings.jwt_refresh_cookie_name,
+            path="/",
+            samesite="lax",
+            secure=False,
+        )
+    except Exception as e:
+        logger.error(f"Error deleting cookies: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail="COOKIE_DELETE_FAILED"
+        )
     data = {
         "ok": True
     }

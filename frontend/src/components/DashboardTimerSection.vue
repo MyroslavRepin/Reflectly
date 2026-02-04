@@ -40,7 +40,7 @@ async function initTimerFromApi() {
       { withCredentials: true }
     )
 
-    if (response.status === 204) {
+    if (!response.data) {
       isTimerRunning.value = false
       elapsedSeconds.value = 0
       return
@@ -58,6 +58,8 @@ async function initTimerFromApi() {
 
   } catch (e) {
     console.error('Timer init failed', e)
+    isTimerRunning.value = false
+    elapsedSeconds.value = 0
   }
 }
 

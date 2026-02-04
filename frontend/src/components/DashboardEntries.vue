@@ -17,11 +17,11 @@ async function fetchAllEntries() {
       },
       withCredentials: true,
     })
-    entries.value = response.data
-    return entries
+    entries.value = Array.isArray(response.data) ? response.data : []
   }
   catch (error) {
     console.error("Error fetching entries:", error);
+    entries.value = []
   }
 }
 function calculateElapsedTime(startedAt, endedAt) {
@@ -77,6 +77,7 @@ onMounted(() => {
       <p>Total {{ totalEntries }}</p>
     </header>
     <div class="entries-list">
+      <p v-if="!entries">No existing entries are found</p>
       <div v-for="entry in entriesWithElapsedTime" :key="entry.id">
         <div v-if="entry.elapsed" class="entry" @click="openModal(entry)">
           <p>{{ entry["id"] }}</p>

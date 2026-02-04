@@ -77,7 +77,7 @@ async def stop_timer(
     result = await db.execute(stmt)
     running_entry = result.scalars().first()
     if not running_entry:
-        raise HTTPException(status_code=204, detail="No running timer found")
+        raise HTTPException(status_code=404, detail="No running timer found")
     running_entry.ended_at = datetime.datetime.now(datetime.timezone.utc)
     try:
         await db.commit()
@@ -92,7 +92,6 @@ async def stop_timer(
     except Exception as e:
         logger.error(f"Error stopping timer for user {user_id}: {e}")
         raise HTTPException(status_code=500, detail="Error stopping timer")
-    return user_id
 
 @router.get("/api/v1/timer/current")
 async def get_current_timer(
@@ -108,7 +107,7 @@ async def get_current_timer(
     result = await db.execute(stmt)
     running_entry = result.scalars().first()
     if not running_entry:
-        raise HTTPException(status_code=204, detail="No running timer found")
+        return None
     data = {
         "id": running_entry.id,
         "started_at": running_entry.started_at,
@@ -126,9 +125,8 @@ async def get_all_sessions(jwt_decoded: str = Depends(get_current_user), db: Asy
         stmt = select(entries_repo.model).where(entries_repo.model.user_id == int(user_id))
         result = await db.execute(stmt)
         entries = result.scalars().all()
-        if not entries:
-            raise HTTPException(status_code=204, detail="No entries found")
-        return entries
+        logger.debug(f"Found {len(entries)} entries for user {user_id}")
+        return entries if entries else []
     except Exception as e:
         logger.error(f"Error getting entries for user {user_id}: {e}")
         raise HTTPException(status_code=500, detail="Error getting entries")
