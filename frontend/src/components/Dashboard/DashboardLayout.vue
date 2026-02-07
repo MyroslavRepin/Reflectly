@@ -5,7 +5,7 @@ import DashboardUserGreeting from "./DashboardUserGreeting.vue";
 import DashboardEntries from "./DashboardEntries.vue";
 
 import axios from "axios";
-import { API_BASE_URL } from "@/config/api";
+import { API_BASE_URL } from "@/config/api.js";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 
@@ -42,9 +42,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="isVerified" class="dashboard-page">
+  <div v-if="isVerified" class="settings-page">
     <div class="container">
-      <div class="dashboard-wrapper">
+      <div class="settings-wrapper">
         <aside class="sidebar">
           <SideMenuDashboard />
         </aside>
@@ -59,7 +59,7 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.dashboard-page {
+.settings-page {
   min-height: 100vh;
   background: var(--color-off-white);
   padding: 0;
@@ -74,7 +74,7 @@ onMounted(async () => {
   min-height: 100vh;
 }
 
-.dashboard-wrapper {
+.settings-wrapper {
   display: flex;
   flex-direction: row;
   gap: 24px;

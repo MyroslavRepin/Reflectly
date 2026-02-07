@@ -18,20 +18,27 @@ function closeModal() {
       
       <div class="modal-body">
         <div class="modal-field">
-          <label>ID:</label>
-          <span>{{ entry.id }}</span>
+          <label>Title:</label>
+          <span v-if="entry.title">
+            {{ entry.title }}
+          </span>
         </div>
-        
+
+        <div class="modal-field">
+          <label>Description:</label>
+          <span v-if="entry.description">
+            {{ entry.description }}
+          </span>
+        </div>
+
         <div class="modal-field">
           <label>Started:</label>
           <span>{{ new Date(entry.started_at).toLocaleString() }}</span>
         </div>
-        
         <div class="modal-field">
           <label>Ended:</label>
           <span>{{ entry.ended_at ? new Date(entry.ended_at).toLocaleString() : 'Running' }}</span>
         </div>
-        
         <div class="modal-field">
           <label>Duration:</label>
           <span v-if="entry.elapsed">
@@ -61,7 +68,7 @@ function closeModal() {
 }
 
 .modal {
-  background: #3f403f;
+  background: #111111;
   border-radius: 24px;
   padding: 0;
   max-width: 500px;

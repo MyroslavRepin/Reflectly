@@ -7,8 +7,9 @@ import './assets/css/variables.css';
 import LandingPage from './components/LandingPage.vue'
 import LoginPage from './components/LoginPage.vue';
 import SignupPage from './components/SignupPage.vue';
-import DashboardLayout from './components/DashboardLayout.vue';
+import DashboardLayout from './components/Dashboard/DashboardLayout.vue';
 import EntryModal from "./components/EntryModal.vue";
+import SettingsLayout from "@/components/Settings/SettingsLayout.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -37,6 +38,11 @@ const router = createRouter({
             name: 'EntryModal',
             path: '/entries/:entry_id',
             component: EntryModal,
+        },
+        {
+            name: 'Settings',
+            path: '/settings',
+            component: SettingsLayout,
         }
     ]
 });

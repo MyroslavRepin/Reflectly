@@ -1,7 +1,7 @@
 <script setup>
 import {ref, onMounted, computed, onUnmounted, watch} from "vue";
 import axios from "axios";
-import { API_BASE_URL } from "@/config/api";
+import { API_BASE_URL } from "@/config/api.js";
 
 let isError = ref(false)
 let errorMessage = ref("")

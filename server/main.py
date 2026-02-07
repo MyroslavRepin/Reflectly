@@ -16,7 +16,6 @@ load_dotenv()
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
 from fastapi.responses import FileResponse
 from server.app.api.landing import router as landing_router
 from server.app.api.playground import router as playground_router
@@ -25,6 +24,7 @@ from server.app.api.dashboard import router as dashboard_router
 from server.app.api.v1.refresh_tokens import router as refresh_tokens_router
 from server.app.api.v1.time_entries import router as time_entries_router
 from server.app.api.v1.auth import router as api_auth_router
+from server.app.api.v1.users import router as api_users_router
 
 # === Intercept standard logging and redirect to Loguru ===
 class InterceptHandler(logging.Handler):
@@ -92,6 +92,7 @@ app.include_router(dashboard_router)
 app.include_router(refresh_tokens_router)
 app.include_router(time_entries_router)
 app.include_router(api_auth_router)
+app.include_router(api_users_router)
 
 # Catch-all route for SPA - serve index.html for client-side routing
 @app.get("/{full_path:path}", response_class=FileResponse)

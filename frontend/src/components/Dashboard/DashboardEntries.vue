@@ -1,8 +1,8 @@
 <script setup>
 import {computed, onMounted, ref} from 'vue'
 import axios from "axios";
-import { API_BASE_URL } from '@/config/api'
-import EntryModal from './EntryModal.vue'
+import { API_BASE_URL } from '@/config/api.js'
+import EntryModal from '../EntryModal.vue'
 
 const entries = ref([])
 const now = ref(new Date())
@@ -17,6 +17,7 @@ async function fetchAllEntries() {
       },
       withCredentials: true,
     })
+    console.log(response)
     entries.value = Array.isArray(response.data) ? response.data : []
   }
   catch (error) {
