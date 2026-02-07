@@ -92,7 +92,12 @@ async def login_api(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="No user found with this username or email"
         )
-
+    if user.is_deleted:
+        logger.warning(f"User {user.username} is deleted")
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="User is deleted"
+        )
     logger.debug(f"User found: {user.username}, verifying password")
     try:
         is_valid = argon2.verify(user_credentials.password, user.hashed_password)

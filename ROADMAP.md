@@ -12,7 +12,7 @@ for users and sessions with correct business rules.
 
 ### User
 - [x] Update user profile (username, email)
-- [ ] Delete user account (soft delete allowed)
+- [x] Delete user account (soft delete allowed)
 
 ### Sessions
 - [ ] Update session
