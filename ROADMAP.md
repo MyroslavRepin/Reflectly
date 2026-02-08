@@ -15,12 +15,12 @@ for users and sessions with correct business rules.
 - [x] Delete user account (soft delete allowed)
 
 ### Sessions
-- [ ] Update session
+- [x] Update session
   - title
   - description
   - start_time
   - end_time
-- [ ] Delete session
+- [x] Delete session
 
 ### Business Rules
 - [ ] Enforce single active session per user
