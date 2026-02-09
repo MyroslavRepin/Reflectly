@@ -23,9 +23,9 @@ for users and sessions with correct business rules.
 - [x] Delete session
 
 ### Business Rules
-- [ ] Enforce single active session per user
-- [ ] Prevent access to other users’ sessions
-- [ ] Define active session as `end_time = null`
+- [x] Enforce single active session per user
+- [x] Prevent access to other users’ sessions
+- [x] Define active session as `end_time = null`
 
 Deliverable:
 - Fully functional CRUD API for users and sessions
