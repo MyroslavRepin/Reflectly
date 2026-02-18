@@ -14,11 +14,11 @@ import settingsIcon from '@/assets/icons/settings-icon.svg'
       </RouterLink>
     </div>
     <div class="bottom-navigation">
-      <RouterLink to="/profile">
-        <div class="link-square">
-          <img :src="profileIcon" alt="Profile icon"/>
-        </div>
-      </RouterLink>
+<!--      <RouterLink to="/profile">-->
+<!--        <div class="link-square">-->
+<!--          <img :src="profileIcon" alt="Profile icon"/>-->
+<!--        </div>-->
+<!--      </RouterLink>-->
       <RouterLink to="/settings">
         <div class="link-square">
           <img :src="settingsIcon" alt="Settings icon"/>

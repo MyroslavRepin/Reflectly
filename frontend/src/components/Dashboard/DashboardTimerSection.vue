@@ -144,13 +144,13 @@ const timerDisplay = computed(() => {
           </svg>
           Start
         </button>
-        <button class="btn btn-pause" v-if="isTimerRunning" @click="pauseTimerRequest">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <rect x="6" y="4" width="4" height="16"></rect>
-            <rect x="14" y="4" width="4" height="16"></rect>
-          </svg>
-          Pause
-        </button>
+<!--        <button class="btn btn-pause" v-if="isTimerRunning" @click="pauseTimerRequest">-->
+<!--          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">-->
+<!--            <rect x="6" y="4" width="4" height="16"></rect>-->
+<!--            <rect x="14" y="4" width="4" height="16"></rect>-->
+<!--          </svg>-->
+<!--          Pause-->
+<!--        </button>-->
         <button class="btn btn-stop" v-if="isTimerRunning" @click="stopTimerRequest">
           <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <rect x="5" y="5" width="14" height="14"></rect>
@@ -433,8 +433,9 @@ const timerDisplay = computed(() => {
   margin-top: 32px;
   padding: 20px 24px;
   background: rgba(99, 102, 241, 0.05);
-  border-left: 3px solid #6366f1;
+  //border-left: 3px solid #6366f1;
   border-radius: 12px;
+  border: 1px solid rgba(99, 102, 241, 0.1);
 }
 
 .task-info {
