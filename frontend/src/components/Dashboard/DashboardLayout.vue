@@ -3,12 +3,48 @@ import DashboardTimerSection from "./DashboardTimerSection.vue";
 import SideMenuDashboard from "./DashboardSideMenu.vue";
 import DashboardUserGreeting from "./DashboardUserGreeting.vue";
 import DashboardEntries from "./DashboardEntries.vue";
+
+import axios from "axios";
+import { API_BASE_URL } from "@/config/api.js";
+import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const isVerified = ref(false);
+
+const isUserVerified = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/auth/verify`, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      withCredentials: true,
+    });
+    
+    if (response.data?.ok) {
+      isVerified.value = true;
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error("Error verifying user:", error);
+    isVerified.value = false;
+    return false;
+  }
+};
+
+onMounted(async () => {
+  const verified = await isUserVerified();
+  if (!verified) {
+    router.push('/login');
+  }
+});
 </script>
 
 <template>
-  <div class="dashboard-page">
+  <div v-if="isVerified" class="settings-page">
     <div class="container">
-      <div class="dashboard-wrapper">
+      <div class="settings-wrapper">
         <aside class="sidebar">
           <SideMenuDashboard />
         </aside>
@@ -23,7 +59,7 @@ import DashboardEntries from "./DashboardEntries.vue";
 </template>
 
 <style scoped>
-.dashboard-page {
+.settings-page {
   min-height: 100vh;
   background: var(--color-off-white);
   padding: 0;
@@ -38,7 +74,7 @@ import DashboardEntries from "./DashboardEntries.vue";
   min-height: 100vh;
 }
 
-.dashboard-wrapper {
+.settings-wrapper {
   display: flex;
   flex-direction: row;
   gap: 24px;

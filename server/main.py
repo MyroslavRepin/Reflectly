@@ -13,11 +13,12 @@ from server.core.jwt_service import JWTService
 # Load environment variables from .env file
 load_dotenv()
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.exceptions import RequestValidationError
+from pydantic import ValidationError
 from server.app.api.landing import router as landing_router
 from server.app.api.playground import router as playground_router
 from server.app.api.auth import router as auth_router
@@ -25,6 +26,7 @@ from server.app.api.dashboard import router as dashboard_router
 from server.app.api.v1.refresh_tokens import router as refresh_tokens_router
 from server.app.api.v1.time_entries import router as time_entries_router
 from server.app.api.v1.auth import router as api_auth_router
+from server.app.api.v1.users import router as api_users_router
 
 # === Intercept standard logging and redirect to Loguru ===
 class InterceptHandler(logging.Handler):
@@ -64,6 +66,38 @@ sys.excepthook = handle_exception
 
 # Creating Main App
 app = FastAPI()
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    logger.error(f"Validation error for {request.method} {request.url}")
+    logger.error(f"Request body: {await request.body()}")
+    logger.error(f"Validation errors: {exc.errors()}")
+    
+    # Transform validation errors to user-friendly format
+    errors = []
+    for error in exc.errors():
+        field = error['loc'][-1] if error['loc'] else 'unknown'
+        message = error.get('msg', 'Validation error')
+        
+        # Extract user-friendly message
+        if 'ctx' in error and 'reason' in error['ctx']:
+            message = error['ctx']['reason']
+        
+        errors.append({
+            'field': field,
+            'message': message,
+            'input': error.get('input')
+        })
+    
+    return JSONResponse(
+        status_code=422,
+        content={
+            "detail": "Validation failed",
+            "errors": errors,
+            "raw_errors": exc.errors()  # Keep for debugging
+        },
+    )
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://localhost:8080", "https://reflectly.myroslavrepin.com"],
@@ -92,6 +126,7 @@ app.include_router(dashboard_router)
 app.include_router(refresh_tokens_router)
 app.include_router(time_entries_router)
 app.include_router(api_auth_router)
+app.include_router(api_users_router)
 
 # Catch-all route for SPA - serve index.html for client-side routing
 @app.get("/{full_path:path}", response_class=FileResponse)

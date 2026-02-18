@@ -1,8 +1,8 @@
 <script setup>
 import {computed, onMounted, ref} from 'vue'
 import axios from "axios";
-import { API_BASE_URL } from '@/config/api'
-import EntryModal from './EntryModal.vue'
+import { API_BASE_URL } from '@/config/api.js'
+import EntryModal from '../EntryModal.vue'
 
 const entries = ref([])
 const now = ref(new Date())
@@ -11,17 +11,18 @@ const isModalOpen = ref(false)
 
 async function fetchAllEntries() {
   try {
-    const response = await axios.get(`${API_BASE_URL}/timer/`, {
+    const response = await axios.get(`${API_BASE_URL}/time-entries`, {
       headers: {
         'Content-Type': 'application/json'
       },
       withCredentials: true,
     })
-    entries.value = response.data
-    return entries
+    console.log(response)
+    entries.value = Array.isArray(response.data) ? response.data : []
   }
   catch (error) {
     console.error("Error fetching entries:", error);
+    entries.value = []
   }
 }
 function calculateElapsedTime(startedAt, endedAt) {
@@ -77,6 +78,7 @@ onMounted(() => {
       <p>Total {{ totalEntries }}</p>
     </header>
     <div class="entries-list">
+      <p v-if="!entries">No existing entries are found</p>
       <div v-for="entry in entriesWithElapsedTime" :key="entry.id">
         <div v-if="entry.elapsed" class="entry" @click="openModal(entry)">
           <p>{{ entry["id"] }}</p>

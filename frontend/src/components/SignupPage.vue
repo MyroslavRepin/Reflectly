@@ -1,27 +1,34 @@
 <script setup>
 import { ref, computed } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 import { API_BASE_URL } from '@/config/api';
+
+const router = useRouter();
 
 const formData = ref({
   email: '',
   username: '',
   password: '',
 });
+const isLoading = ref(false);
 
 const tagline = ref("Ready to track your coding progress?")
 const isError = ref(false);
 
 const disabled = computed(() => {
-  if (formData.value.email && formData.value.username && formData.value.password) {
-    return false;
-  } else {
+  if (isLoading.value) {
     return true;
   }
-
+  return !formData.value.email || !formData.value.username || !formData.value.password;
 });
+
 let year = ref( new Date().getFullYear() );
+
 const sendSignupRequest = async () => {
+  isError.value = false;
+  isLoading.value = true;
+  
   try {
     const response = await axios.post(`${API_BASE_URL}/auth/signup`, {
       email: formData.value.email,
@@ -33,23 +40,30 @@ const sendSignupRequest = async () => {
       },
       withCredentials: true,
     });
+    
+    if (response.data?.ok) {
+      return router.push('/dashboard');
+    }
   } catch (error) {
+    isError.value = true;
+    
     if (!error.response) {
       tagline.value = "Network error. Please check your connection.";
       return;
     }
-    if (error.response.status === 401) {
-      tagline.value = "Invalid credentials. Please try again.";
-      isError.value = true;
+    
+    const status = error.response.status;
+    const detail = error.response.data?.detail;
+    
+    if (status === 409) {
+      tagline.value = detail || 'User with this email/username already exists.';
+    } else if (status === 500) {
+      tagline.value = "Server error. Please try again later.";
+    } else {
+      tagline.value = detail || "An error occurred. Please try again.";
     }
-    if (error.response.status === 409) {
-      tagline.value = 'User with this email/username already exists.';
-      isError.value = true;
-    }
-    else {
-      tagline.value = `Server error occurred. Please try again later.`;
-      isError.value = true;
-    }
+  } finally {
+    isLoading.value = false;
   }
 };
 </script>
@@ -66,7 +80,7 @@ const sendSignupRequest = async () => {
         <div class="login-content">
       <div class="logo">reflectly<span class="registered">®</span></div>
       <p class="subtitle">Time Tracker</p>
-      <p class="tagline" >{{tagline}}</p>
+      <p class="tagline" :class="{ error: isError }">{{tagline}}</p>
 
       <form @submit.prevent="sendSignupRequest">
         <!--- Email field --->
@@ -115,7 +129,7 @@ const sendSignupRequest = async () => {
           class="login-button"
           :disabled="disabled"
         >
-          Start being productive
+          {{ isLoading ? 'Creating account...' : 'Start being productive' }}
         </button>
       </form>
 
@@ -211,6 +225,11 @@ main {
   color: var(--color-text-tertiary);
   font-size: var(--font-size-lg);
   margin-bottom: var(--spacing-4xl);
+  transition: color var(--transition-base);
+}
+
+.tagline.error {
+  color: #f5576c;
 }
 
 .form-group {

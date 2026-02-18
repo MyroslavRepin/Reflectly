@@ -1,7 +1,7 @@
 <script setup>
 import {ref, onMounted, computed, onUnmounted, watch} from "vue";
 import axios from "axios";
-import { API_BASE_URL } from "@/config/api";
+import { API_BASE_URL } from "@/config/api.js";
 
 let isError = ref(false)
 let errorMessage = ref("")
@@ -36,11 +36,11 @@ const seconds = computed(() => elapsedSeconds.value % 60)
 async function initTimerFromApi() {
   try {
     const response = await axios.get(
-      `${API_BASE_URL}/timer/current`,
+      `${API_BASE_URL}/time-entries/current-running`,
       { withCredentials: true }
     )
 
-    if (response.status === 204) {
+    if (!response.data) {
       isTimerRunning.value = false
       elapsedSeconds.value = 0
       return
@@ -54,22 +54,27 @@ async function initTimerFromApi() {
 
     elapsedSeconds.value = now - startedAt
     isTimerRunning.value = true
-    startTick()
 
   } catch (e) {
     console.error('Timer init failed', e)
+    isTimerRunning.value = false
+    elapsedSeconds.value = 0
   }
 }
 
 const startTimerRequest = async () => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/timer/start`, {}, {
+    const response = await axios.post(`${API_BASE_URL}/time-entries/start`, {
+      title: formData.value.title,
+      description: formData.value.description,
+    }, {
       headers: {
         'Content-Type': 'application/json'
       },
       withCredentials: true,
     })
-    isTimerRunning.value = true;
+    elapsedSeconds.value = 0
+    isTimerRunning.value = true
   }
   catch (error) {
     isError.value = true
@@ -79,7 +84,7 @@ const startTimerRequest = async () => {
 }
 const stopTimerRequest = async () => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/timer/stop`, {}, {
+    const response = await axios.patch(`${API_BASE_URL}/time-entries/stop`, {}, {
       headers: {
         'Content-Type': 'application/json'
       },
@@ -92,6 +97,8 @@ const stopTimerRequest = async () => {
     isError.value = true
     errorMessage.value = error.message
     console.error("Error stopping timer:", error);
+    isTimerRunning.value = false
+    elapsedSeconds.value = 0
   }
 }
 const pauseTimerRequest = async () => {
@@ -121,11 +128,11 @@ const timerDisplay = computed(() => {
           {{ isTimerRunning ? 'Active' : 'Idle' }}
         </div>
         <div class="session-time">
-          <span class="time-digit">{{ String(hours).padStart(2, '0') }}</span>
+          <span class="time-digit">{{ hours.toString().padStart(2, '0') }}</span>
           <span class="time-separator">:</span>
-          <span class="time-digit">{{ String(minutes).padStart(2, '0') }}</span>
+          <span class="time-digit">{{ minutes.toString().padStart(2, '0') }}</span>
           <span class="time-separator">:</span>
-          <span class="time-digit">{{ String(seconds).padStart(2, '0') }}</span>
+          <span class="time-digit">{{ seconds.toString().padStart(2, '0') }}</span>
         </div>
         <div class="session-label">{{ isTimerRunning ? 'Time Tracked' : 'Ready to Start' }}</div>
       </div>
@@ -137,13 +144,13 @@ const timerDisplay = computed(() => {
           </svg>
           Start
         </button>
-        <button class="btn btn-pause" v-if="isTimerRunning" @click="pauseTimerRequest">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <rect x="6" y="4" width="4" height="16"></rect>
-            <rect x="14" y="4" width="4" height="16"></rect>
-          </svg>
-          Pause
-        </button>
+<!--        <button class="btn btn-pause" v-if="isTimerRunning" @click="pauseTimerRequest">-->
+<!--          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">-->
+<!--            <rect x="6" y="4" width="4" height="16"></rect>-->
+<!--            <rect x="14" y="4" width="4" height="16"></rect>-->
+<!--          </svg>-->
+<!--          Pause-->
+<!--        </button>-->
         <button class="btn btn-stop" v-if="isTimerRunning" @click="stopTimerRequest">
           <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <rect x="5" y="5" width="14" height="14"></rect>
@@ -152,7 +159,6 @@ const timerDisplay = computed(() => {
         </button>
       </div>
     </div>
-    
     <div class="bottom-section" v-if="!isTimerRunning">
       <form class="timer-form">
         <div class="form-field">
@@ -427,8 +433,9 @@ const timerDisplay = computed(() => {
   margin-top: 32px;
   padding: 20px 24px;
   background: rgba(99, 102, 241, 0.05);
-  border-left: 3px solid #6366f1;
+  //border-left: 3px solid #6366f1;
   border-radius: 12px;
+  border: 1px solid rgba(99, 102, 241, 0.1);
 }
 
 .task-info {

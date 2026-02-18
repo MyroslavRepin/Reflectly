@@ -29,3 +29,6 @@ class TimeEntry(Base):
         nullable=False,
         default=lambda: datetime.now(timezone.utc),
     )
+
+    title: Mapped[str | None] = mapped_column(String(256), nullable=True)
+    description: Mapped[str | None] = mapped_column(nullable=True)
