@@ -13,6 +13,7 @@ const formData = ref({
 
 const tagline = ref("Welcome back. Log in to track your coding sessions and boost your productivity.")
 let isError = ref(false);
+const isLoading = ref(false);
 
 let year = ref( new Date().getFullYear() );
 
@@ -22,7 +23,7 @@ const disabled = computed(() => {
 
 const sendLoginRequest = async () => {
   isError.value = false;
-  
+  isLoading.value = true;
   try {
     const response = await axios.post(`${API_BASE_URL}/auth/login`, {
       login: formData.value.login,
@@ -55,6 +56,8 @@ const sendLoginRequest = async () => {
     } else {
       tagline.value = detail || "An error occurred. Please try again.";
     }
+  } finally {
+    isLoading.value = false;
   }
 };
 </script>
@@ -109,9 +112,9 @@ const sendLoginRequest = async () => {
         <button
           type="submit"
           class="login-button"
-          :disabled="disabled"
+          :disabled="disabled || isLoading"
         >
-          Log In
+          {{ isLoading ? 'Logging in...' : 'Log In' }}
         </button>
       </form>
 
@@ -208,7 +211,7 @@ main {
   font-size: var(--font-size-lg);
   margin-bottom: var(--spacing-4xl);
 }
-.tagline .error {
+.tagline.error {
   color: #f5576c;
   font-size: var(--font-size-lg);
   margin-bottom: var(--spacing-4xl);

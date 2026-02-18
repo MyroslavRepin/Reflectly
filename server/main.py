@@ -13,10 +13,12 @@ from server.core.jwt_service import JWTService
 # Load environment variables from .env file
 load_dotenv()
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.exceptions import RequestValidationError
+from pydantic import ValidationError
 from server.app.api.landing import router as landing_router
 from server.app.api.playground import router as playground_router
 from server.app.api.auth import router as auth_router
@@ -64,6 +66,38 @@ sys.excepthook = handle_exception
 
 # Creating Main App
 app = FastAPI()
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    logger.error(f"Validation error for {request.method} {request.url}")
+    logger.error(f"Request body: {await request.body()}")
+    logger.error(f"Validation errors: {exc.errors()}")
+    
+    # Transform validation errors to user-friendly format
+    errors = []
+    for error in exc.errors():
+        field = error['loc'][-1] if error['loc'] else 'unknown'
+        message = error.get('msg', 'Validation error')
+        
+        # Extract user-friendly message
+        if 'ctx' in error and 'reason' in error['ctx']:
+            message = error['ctx']['reason']
+        
+        errors.append({
+            'field': field,
+            'message': message,
+            'input': error.get('input')
+        })
+    
+    return JSONResponse(
+        status_code=422,
+        content={
+            "detail": "Validation failed",
+            "errors": errors,
+            "raw_errors": exc.errors()  # Keep for debugging
+        },
+    )
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://localhost:8080", "https://reflectly.myroslavrepin.com"],

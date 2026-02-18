@@ -1,22 +1,17 @@
 <script setup>
 import SideMenuDashboard from "../Dashboard/DashboardSideMenu.vue";
 import SettingsProfile from "@/components/Settings/SettingsProfile.vue";
-import SettingsProjects from "@/components/Settings/SettingsProjects.vue";
 import SettingsSecurity from "@/components/Settings/SettingsSecurity.vue";
 
 import axios from "axios";
 import { API_BASE_URL } from "@/config/api.js";
 import { onMounted, ref, computed } from "vue";
 import { useRouter } from "vue-router";
+import Notification from "@/components/Notification.vue";
 
 const router = useRouter();
 const isVerified = ref(false);
 
-const userDataForm = ref({
-  email: '',
-  username: '',
-  password: '',
-})
 const isUserVerified = async () => {
   try {
     const response = await axios.get(`${API_BASE_URL}/auth/verify`, {
@@ -42,7 +37,6 @@ const activeSettingTab = ref('general')
 
 const settingsMap = {
   general: SettingsProfile,
-  projects: SettingsProjects,
   security: SettingsSecurity,
 }
 
@@ -53,7 +47,7 @@ const activeComponent = computed(() => {
 onMounted(async () => {
   const verified = await isUserVerified();
   if (!verified) {
-    router.push('/login');
+    await router.push('/login');
   }
 });
 </script>
@@ -65,23 +59,21 @@ onMounted(async () => {
         <aside class="sidebar">
           <SideMenuDashboard />
         </aside>
-        <main class="main-content">
-          <h1>Settings</h1>
-          <header class="top-menu-section">
-            <button @click="activeComponent = 'profile'">Profile</button>
-            <button @click="activeComponent = 'projects'">Projects</button>
-            <button @click="activeComponent = 'security'">Security</button>
-          </header>
-        </main>
+        <!--- This section is for settings topics--->
+        <SettingsProfile />
       </div>
     </div>
   </div>
 </template>
 <style scoped>
+* {
+  color: #000000;
+  margin: 0;
+  padding: 0;
+}
 h1{
   margin: 0;
   color: #000000;
-  font-family: Montserrat;
 }
 h*, p* {
   margin: 0;
@@ -90,7 +82,6 @@ h*, p* {
   min-height: 100vh;
   background: var(--color-off-white);
   padding: 0;
-  /* overflow-x: hidden; */
 }
 
 .container {
@@ -115,27 +106,5 @@ h*, p* {
 .sidebar {
   flex-shrink: 0;
   width: 72px;
-}
-
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  max-width: calc(100% - 96px);
-  //overflow-x: hidden;
-}
-
-/* TOP MENU SECTION */
-.top-menu-section {
-  width: 100%;
-  height: 50px;
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid #a8a8a8;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
 }
 </style>

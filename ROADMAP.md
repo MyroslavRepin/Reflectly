@@ -43,7 +43,7 @@ Goal: Expose all backend CRUD functionality through the UI.
 
 ### Sessions
 - [ ] Sessions list
-- [ ] Click session to open edit modal
+- [ ] Click session to open edit modal   
 - [ ] Update session from modal
 - [ ] Delete session with confirmation
 
