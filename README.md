@@ -2,7 +2,7 @@
 
 Track your coding sessions, reflect on productivity, and build better habits.
 
-**Version:** 0.4.0  
+**Version:** 0.5.0  
 **Repository:** https://github.com/MyroslavRepin/Reflectly.git
 
 > This project is actively under development. Some features may be incomplete or subject to change.
@@ -84,10 +84,11 @@ npm run dev
   - Secure JWT-based sessions
   - Persistent login with refresh tokens
 
-- **Dashboard** 📊
-  - Overview of current and past sessions
-  - Session details and duration
-  - User profile management
+- **Dashboard & Settings** 📊
+  - Redesigned dashboard with intuitive navigation
+  - Detailed session history with title and description editing
+  - User profile management and settings module
+  - Secure account deletion (soft delete)
 
 - **Modern UI** 🎨
   - Responsive Vue 3 single-page application
@@ -309,6 +310,8 @@ Reflectly/
 │   │   │   ├── DashboardLayout.vue   # Main dashboard layout
 │   │   │   ├── DashboardEntries.vue  # Session history
 │   │   │   ├── DashboardTimerSection.vue  # Timer interface
+│   │   │   ├── Notification.vue      # Reusable notifications
+│   │   │   ├── Settings/             # Settings module
 │   │   │   ├── LoginPage.vue         # Authentication
 │   │   │   └── SignupPage.vue        # Registration
 │   │   ├── assets/                   # Styles and static files
@@ -371,11 +374,18 @@ Once the backend is running, access interactive API documentation:
 - `POST /api/v1/auth/login` - User login
 - `POST /api/v1/auth/refresh` - Refresh access token
 
-**Timer:**
+**Timer & Entries:**
 - `GET /api/v1/timer/` - Get all sessions
 - `GET /api/v1/timer/current` - Get active session
 - `POST /api/v1/timer/start` - Start new session
 - `POST /api/v1/timer/stop` - Stop current session
+- `PUT /api/v1/timer/{entry_id}` - Update session details
+- `DELETE /api/v1/timer/{entry_id}` - Delete session
+
+**User Profile:**
+- `GET /api/v1/users/me` - Get current user profile
+- `PATCH /api/v1/users/me` - Update user profile
+- `DELETE /api/v1/users/me` - Soft delete account
 
 ---
 

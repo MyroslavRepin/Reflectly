@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-02-18
+
+### Added
+- **User Profile Management**
+  - Profile update functionality with form validation
+  - Reusable notification component for success/error messages
+  - "Soft delete" support with `is_deleted` field in user schema
+  - Dashboard links for profile and future updates
+- **Dashboard Redesign**
+  - Improved layout and visual design for the main dashboard
+  - Integrated user settings module
+- **Enhanced Time Entry Management**
+  - New APIs for updating and deleting time entries
+  - Added `title` and `description` fields to time entries for better context
+  - Real-time dashboard updates for entry management
+- **Infrastructure & Deployment**
+  - Cloudflare Tunnel integration for secure, dynamic access
+  - Docker Compose improvements for Vue server development
+  - Standardized API responses and error handling across all modules
+- **Documentation**
+  - New detailed API documentation and updated endpoint guides
+  - Deployment guide for Cloudflare Tunnel setup
+
+### Changed
+- Standardized error handling and API response formats
+- Updated roadmap to reflect completed session management and user features
+- Refactored dashboard structure for better maintainability
+
+### Fixed
+- Authentication flow bug related to deleted users
+- Cloudflare configuration for dynamic credentials and volume paths
+- Docker volume paths for development environments
+
 ## [0.4.0] - 2026-02-02
 
 ### Added
