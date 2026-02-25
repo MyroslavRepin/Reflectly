@@ -2,7 +2,7 @@
 import {computed, onMounted, ref} from 'vue'
 import axios from "axios";
 import { API_BASE_URL } from '@/config/api.js'
-import EntryModal from '../EntryModal.vue'
+import EntryModal from '../EntryModal/EntryModal.vue'
 
 const entries = ref([])
 const now = ref(new Date())
