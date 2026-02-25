@@ -2,7 +2,7 @@
 
 Track your coding sessions, reflect on productivity, and build better habits.
 
-**Version:** 0.5.0  
+**Version:** 0.6.0  
 **Repository:** https://github.com/MyroslavRepin/Reflectly.git
 
 > This project is actively under development. Some features may be incomplete or subject to change.
@@ -87,6 +87,8 @@ npm run dev
 - **Dashboard & Settings** 📊
   - Redesigned dashboard with intuitive navigation
   - Detailed session history with title and description editing
+  - **Enhanced entry modal with preview and edit modes**
+  - **Individual time entry viewing and editing**
   - User profile management and settings module
   - Secure account deletion (soft delete)
 
@@ -98,11 +100,6 @@ npm run dev
 ### Coming Soon
 
 - Productivity journal
-- Advanced statistics and charts
-- Session categorization and tagging
-- AI-powered insights
-- Task planning and prioritization
-- Export statistics
 
 ---
 
@@ -375,12 +372,14 @@ Once the backend is running, access interactive API documentation:
 - `POST /api/v1/auth/refresh` - Refresh access token
 
 **Timer & Entries:**
-- `GET /api/v1/timer/` - Get all sessions
-- `GET /api/v1/timer/current` - Get active session
-- `POST /api/v1/timer/start` - Start new session
-- `POST /api/v1/timer/stop` - Stop current session
-- `PUT /api/v1/timer/{entry_id}` - Update session details
-- `DELETE /api/v1/timer/{entry_id}` - Delete session
+- `GET /api/v1/time-entries` - Get all sessions
+- `GET /api/v1/time-entries/current-running` - Get active session
+- `GET /api/v1/time-entries/{entry_id}` - Get specific time entry
+- `POST /api/v1/time-entries/start` - Start new session
+- `POST /api/v1/time-entries/pause` - Pause current session
+- `PATCH /api/v1/time-entries/stop` - Stop current session
+- `PATCH /api/v1/time-entries/{entry_id}` - Update session details
+- `DELETE /api/v1/time-entries/{entry_id}` - Delete session
 
 **User Profile:**
 - `GET /api/v1/users/me` - Get current user profile
