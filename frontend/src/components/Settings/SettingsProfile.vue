@@ -182,7 +182,7 @@ form {
   height: 48px;
   transition: opacity 0.25s;
   margin-top: var(--spacing-md);
-  color: #000000;
+  color: #ffffff;
 }
 .btn-submit-changes:disabled {
   opacity: 0.5;
